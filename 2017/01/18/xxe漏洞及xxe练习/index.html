@@ -143,39 +143,6 @@ XML有关的几点：
 
 
         
-            <div id="switch-btn" class="switch-btn">
-                <div class="icon">
-                    <div class="icon-ctn">
-                        <div class="icon-wrap icon-house" data-idx="0">
-                            <div class="birdhouse"></div>
-                            <div class="birdhouse_holes"></div>
-                        </div>
-                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
-                            <div class="ribbon"></div>
-                        </div>
-                        
-                        <div class="icon-wrap icon-link hide" data-idx="2">
-                            <div class="loopback_l"></div>
-                            <div class="loopback_r"></div>
-                        </div>
-                        
-                        
-                    </div>
-                    
-                </div>
-                <div class="tips-box hide">
-                    <div class="tips-arrow"></div>
-                    <ul class="tips-inner">
-                        <li>菜单</li>
-                        <li>标签</li>
-                        
-                        <li>友情链接</li>
-                        
-                        
-                    </ul>
-                </div>
-            </div>
-        
 
         <div id="switch-area" class="switch-area">
             <div class="switch-wrap">
@@ -208,12 +175,6 @@ XML有关的几点：
                     </nav>
                 </section>
                 
-                
-                <section class="switch-part switch-part2">
-                    <div class="widget tagcloud" id="js-tagcloud">
-                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ctf/">ctf</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/web安全/">web安全</a></li></ul>
-                    </div>
-                </section>
                 
                 
                 
@@ -393,7 +354,7 @@ XML有关的几点：
 <blockquote>
 <p>语法如下: &lt;!DOCTYPE 根元素 [元素声明]&gt;</p>
 </blockquote>
-  <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- This's a DTD example in XML file --&gt;</span></div><div class="line">&lt;?xml version="1.0"?&gt;</div><div class="line"><span class="meta">&lt;!DOCTYPE note [</span></div><div class="line">    &lt;!ELEMENT note (to, from, heading, body)&gt;</div><div class="line">    &lt;!ELEMENT to (#PCDATA)&gt;</div><div class="line">    &lt;!ELEMENT from (#PCDATA)&gt;</div><div class="line">    &lt;!ELEMENT heading (#PCDATA)&gt;</div><div class="line">    &lt;!ELEMEhhNT body (#PCDATA)&gt;</div><div class="line">]&gt;</div><div class="line"><span class="tag">&lt;<span class="name">note</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">to</span>&gt;</span> jxy <span class="tag">&lt;/<span class="name">to</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">from</span>&gt;</span> jxy <span class="tag">&lt;/<span class="name">from</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">heading</span>&gt;</span> Remider <span class="tag">&lt;/<span class="name">heading</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span> Don't forgot working hard <span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">note</span>&gt;</span></div></pre></td></tr></table></figure>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- This's a DTD example in XML file --&gt;</span></div><div class="line"><span class="php"><span class="meta">&lt;?</span>xml version=<span class="string">"1.0"</span><span class="meta">?&gt;</span></span></div><div class="line"><span class="meta">&lt;!DOCTYPE note [</span></div><div class="line">    &lt;!ELEMENT note (to, from, heading, body)&gt;</div><div class="line">    &lt;!ELEMENT to (#PCDATA)&gt;</div><div class="line">    &lt;!ELEMENT from (#PCDATA)&gt;</div><div class="line">    &lt;!ELEMENT heading (#PCDATA)&gt;</div><div class="line">    &lt;!ELEMEhhNT body (#PCDATA)&gt;</div><div class="line">]&gt;</div><div class="line"><span class="tag">&lt;<span class="name">note</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">to</span>&gt;</span> jxy <span class="tag">&lt;/<span class="name">to</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">from</span>&gt;</span> jxy <span class="tag">&lt;/<span class="name">from</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">heading</span>&gt;</span> Remider <span class="tag">&lt;/<span class="name">heading</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span> Don't forgot working hard <span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">note</span>&gt;</span></div></pre></td></tr></table></figure>
 <ul>
 <li><code>!DOCTYPE note</code> 定义此文档是note类型的文档</li>
 <li><code>!ELEMENT note</code> 定义note元素有四个元素 : to,from,heading, body</li>
@@ -434,7 +395,7 @@ XML有关的几点：
 <li>在<a href="https://pentesterlab.com/exercises/play_xxe" target="_blank" rel="external">pentest lab</a> 上下载iso镜象并安装至VIRTUAL BOX上。打开网页是一个登录界面。</li>
 <li>用BURPSUITE做代理得如下。<br> <img src="http://img.blog.csdn.net/20161204205517599" alt="play xxe login"></li>
 <li><p>用xml的实体来试。<br> 输入为：</p>
- <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">POST /login HTTP/1.1</div><div class="line">Host: 10.108.40.26</div><div class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:49.0) Gecko/20100101 Firefox/49.0</div><div class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</div><div class="line">Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3</div><div class="line">Accept-Encoding: gzip, deflate</div><div class="line">Referer: http://10.108.40.26/login</div><div class="line">Connection: keep-alive</div><div class="line">Upgrade-Insecure-Requests: 1</div><div class="line">Content-Length: 37</div><div class="line"></div><div class="line">&lt;?xml version="1.0"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">foo</span>&gt;</span>xxe</div></pre></td></tr></table></figure>
+ <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">POST /login HTTP/1.1</div><div class="line">Host: 10.108.40.26</div><div class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:49.0) Gecko/20100101 Firefox/49.0</div><div class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</div><div class="line">Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3</div><div class="line">Accept-Encoding: gzip, deflate</div><div class="line">Referer: http://10.108.40.26/login</div><div class="line">Connection: keep-alive</div><div class="line">Upgrade-Insecure-Requests: 1</div><div class="line">Content-Length: 37</div><div class="line"></div><div class="line"><span class="php"><span class="meta">&lt;?</span>xml version=<span class="string">"1.0"</span><span class="meta">?&gt;</span></span></div><div class="line"><span class="tag">&lt;<span class="name">foo</span>&gt;</span>xxe</div></pre></td></tr></table></figure>
 <p> 虽然 请求内容为非正常的XML, 但是回复与上图相同。 原因在于<code>Content-Type</code>请求头未设置。即如果请求为：</p>
  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">POST /login HTTP/1.1</div><div class="line">Host: 10.108.40.26</div><div class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:49.0) Gecko/20100101 Firefox/49.0</div><div class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</div><div class="line">Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3</div><div class="line">Accept-Encoding: gzip, deflate</div><div class="line">Referer: http://10.108.40.26/login</div><div class="line">Connection: keep-alive</div><div class="line">Upgrade-Insecure-Requests: 1</div><div class="line">Content-Type: text/xml</div><div class="line">Content-Length: 31</div><div class="line"></div><div class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</div><div class="line">&lt;foo&gt;xxe</div></pre></td></tr></table></figure>
 <p> 那么响应为：</p>
