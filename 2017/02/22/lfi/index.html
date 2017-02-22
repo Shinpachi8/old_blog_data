@@ -60,7 +60,7 @@
 <meta property="og:image" content="http://ojv4vdr4o.bkt.clouddn.com/lfi-lfi_access_log.png">
 <meta property="og:image" content="http://ojv4vdr4o.bkt.clouddn.com/lfi-smtp1.png">
 <meta property="og:image" content="http://ojv4vdr4o.bkt.clouddn.com/lfi-lfi_mail.png">
-<meta property="og:updated_time" content="2017-02-22T08:45:30.000Z">
+<meta property="og:updated_time" content="2017-02-22T08:49:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="本地文件包含简单练习">
 <meta name="twitter:description" content="测试本地文件包含
@@ -324,8 +324,9 @@
 </blockquote>
 <p>如果源代码如下:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$file = $_GET[&apos;page&apos;];</div><div class="line">include($file.&apos;php&apos;);</div></pre></td></tr></table></figure>
+<a id="more"></a>
 <ol>
-<li><p>可以用空字符来截断<code>%00</code><br>如下图：<br><img src="http://ojv4vdr4o.bkt.clouddn.com/lfi-nullbyte1.PNG" alt="nullbyte1"><br>但是空字符是有限制的。即版本不能高于5.3.4。 这时为了测试，将版本改了5.2.7</p>
+<li><p>可以用空字符来截断<code>%00</code>如下图：<br><img src="http://ojv4vdr4o.bkt.clouddn.com/lfi-nullbyte1.PNG" alt="nullbyte1"><br>但是空字符是有限制的。即版本不能高于5.3.4。 这时为了测试，将版本改了5.2.7</p>
 </li>
 <li><p>可以利用 多个<code>.</code>来进行截断。这里只测试了WINDOWS。 LINUX的需要的更长一些。<br>如下图:<br><img src="http://ojv4vdr4o.bkt.clouddn.com/lfi-nullbyte3.PNG" alt="nullbyte2"></p>
 </li>
@@ -391,7 +392,7 @@
         <p><span>本文标题:</span><a href="/2017/02/22/lfi/">本地文件包含简单练习</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Shinpachi8</a></p>
         <p><span>发布时间:</span>2017-02-22, 16:42:38</p>
-        <p><span>最后更新:</span>2017-02-22, 16:45:30</p>
+        <p><span>最后更新:</span>2017-02-22, 16:49:14</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/02/22/lfi/" title="本地文件包含简单练习">http://yoursite.com/2017/02/22/lfi/</a>
             <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/02/22/lfi/　　作者: Shinpachi8" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>

@@ -249,7 +249,7 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h1 id="测试本地文件包含"><a href="#测试本地文件包含" class="headerlink" title="测试本地文件包含"></a>测试本地文件包含</h1><blockquote>
+              <h1 id="测试本地文件包含"><a href="#测试本地文件包含" class="headerlink" title="测试本地文件包含"></a>测试本地文件包含</h1><blockquote>
 <p>分别在windows使用的phpStudy, 在kali上使用的是apache， 漏洞环境使用的是dvwa。</p>
 </blockquote>
 <h2 id="直接读取"><a href="#直接读取" class="headerlink" title="直接读取"></a>直接读取</h2><blockquote>
@@ -261,63 +261,7 @@
 </blockquote>
 <p>如果源代码如下:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$file = $_GET[&apos;page&apos;];</div><div class="line">include($file.&apos;php&apos;);</div></pre></td></tr></table></figure>
-<ol>
-<li><p>可以用空字符来截断<code>%00</code><br>如下图：<br><img src="http://ojv4vdr4o.bkt.clouddn.com/lfi-nullbyte1.PNG" alt="nullbyte1"><br>但是空字符是有限制的。即版本不能高于5.3.4。 这时为了测试，将版本改了5.2.7</p>
-</li>
-<li><p>可以利用 多个<code>.</code>来进行截断。这里只测试了WINDOWS。 LINUX的需要的更长一些。<br>如下图:<br><img src="http://ojv4vdr4o.bkt.clouddn.com/lfi-nullbyte3.PNG" alt="nullbyte2"></p>
-</li>
-<li><p>也可以利用<code>./</code>来进行截断，同样是在windows下测试。<br><img src="http://ojv4vdr4o.bkt.clouddn.com/lfi-nullbyte4.PNG" alt="nullbyte3"></p>
-</li>
-<li><p>据说也可以利用<code>/.</code>来进行截断，但是在测试里并没有实现。<br><img src="http://ojv4vdr4o.bkt.clouddn.com/lfi-nullbyte5.PNG" alt="nullbyte4"><br><img src="http://ojv4vdr4o.bkt.clouddn.com/lfi-nullbyte6.PNG" alt="nullbyte5"><br><img src="http://ojv4vdr4o.bkt.clouddn.com/lfi-nullbyte7.PNG" alt="nullbyte6"></p>
-</li>
-</ol>
-<h2 id="php-filter"><a href="#php-filter" class="headerlink" title="php://filter"></a>php://filter</h2><blockquote>
-<p><code>php://filter</code>类似于一种在打开流时的过滤元包装器。即可以读也可以写。<br>其应用为: <code>php://filter/read/resource=</code> <code>php://filter/write/resource=</code>, 或者直接<code>php://filter/resource=</code>  也可以加上过滤器<a href="http://php.net/manual/en/filters.php" target="_blank" rel="external">php过滤器</a> 这个也常用于CTF的比赛中。</p>
-</blockquote>
-<p><code>php://filter/convert.base64-encode/resource=</code>的使用下图:<br><img src="http://ojv4vdr4o.bkt.clouddn.com/lfi-php_filter1.PNG" alt="php_filter"><br><code>php://filter/read</code>使用如下:<br><img src="http://ojv4vdr4o.bkt.clouddn.com/lfi-php_filter_read.PNG" alt="php_filter_read"></p>
-<h2 id="zip-phar"><a href="#zip-phar" class="headerlink" title="zip:// | phar://"></a>zip:// | phar://</h2><blockquote>
-<p>是两个处理压缩包的伪协议。<br>其中 zip:// 将压缩后的文件打开时用#, phar://用 /</p>
-</blockquote>
-<p>使用这种文件读取方法，首先要先上传一个zip的压缩包。这里我们直接将内容为<code>&lt;?php echo &quot;your wrapper successed&quot;?&gt;</code>的文件压缩完放至 /dvwa/hackable/uploads/路径下， 因为我试着直接上传之后再不能打开，原因还未找到。</p>
-<p>同样，这两个伪协议在CTF中也很常用。 HCTF中有一个题也是用的这个小把戏。 可以参看博客里最后一题..(做的比较LOW，求不喷..)<br><a href="https://shinpachi8.github.io/2017/01/18/hctf-2016-write-up/" target="_blank" rel="external">hctf writeup</a></p>
-<p>利用方法如下:</p>
-<p><img src="http://ojv4vdr4o.bkt.clouddn.com/lfi-phar1.PNG" alt="phar1"></p>
-<h2 id="php-input"><a href="#php-input" class="headerlink" title="php://input"></a>php://input</h2><blockquote>
-<p>php://input is a read-only stream that allows you to read raw data from the request body。 <code>php://input</code>是一个允许在请求体中读取数据的只读流。</p>
-</blockquote>
-<p>利用方式如下:</p>
-<p><img src="http://ojv4vdr4o.bkt.clouddn.com/lfi-php_input.PNG" alt="php_input"></p>
-<h2 id="本地可包含-proc-self-environ-log"><a href="#本地可包含-proc-self-environ-log" class="headerlink" title="本地可包含 /proc/self/environ,log"></a>本地可包含 <code>/proc/self/environ</code>,<code>log</code></h2><blockquote>
-<p>可参考这篇文章<a href="https://www.exploit-db.com/papers/12886/" target="_blank" rel="external">exploit-db shell via LFI - proc/self/environ method</a>, 同时关于log日志的包含大家应该比较熟悉了。这里就放一块来说了。</p>
-</blockquote>
-<p><strong>后边的测试包括SMTP都是在METASPLOITABLE上测试的, 本来想到做环境，后来想到既然有现成的，为什么不用呢？？</strong><br>测试步骤:</p>
-<ol>
-<li>首先要测试是否有LFI漏洞。</li>
-<li>测试是否可包含environ, 或者日志文件, 可猜测的路径有<code>/proc/self/environ</code>, <code>/var/log/apache2/access.log</code>, <code>/var/log/apache2/error.log</code>等， 也可以用这一个<a href="https://github.com/tennc/fuzzdb/tree/master/dict/BURP-PayLoad/LFI" target="_blank" rel="external">burpsuite插件</a>来做.</li>
-<li>尝试在这几个文件中注入php代码。 因为我们知道，<code>include</code>函数可以将含php代码的非PHP的文件解析为php文件。如下:<br><img src="http://ojv4vdr4o.bkt.clouddn.com/lfi-lfi_include.png" alt="include non php file"></li>
-</ol>
-<p>可以在HTTP的USER-AGENT头注入代码，也可以用CURL来注入。<br><img src="http://ojv4vdr4o.bkt.clouddn.com/lfi-lfi_environ2.png" alt="inject php code from ua"></p>
-<p>同样可以利用日志文件来进行包含。 当然如果文件太大，可能解析会比较慢。这里我将日志文件的权限设置为了777，否则没有权限读。</p>
-<p><img src="http://ojv4vdr4o.bkt.clouddn.com/lfi-lfi_access_log.png" alt="lfi_log"></p>
-<h2 id="通过SMTP来利用"><a href="#通过SMTP来利用" class="headerlink" title="通过SMTP来利用"></a>通过SMTP来利用</h2><blockquote>
-<p>如果目标直接或者通过网络来发送邮件，并在系统上存储www-data 或者apache的邮件，那么可以尝试将php代码通过邮件发送给目标。 如果没有MX记录，但是SMTP对外开放，那么可以用TELNET并向SMTP发送包含PHP代码的邮件来进行利用。 还要就是要有/var/spool/mail/的读取权限。</p>
-</blockquote>
-<p>首先扫描一下SMTP用户:</p>
-<p><img src="http://ojv4vdr4o.bkt.clouddn.com/lfi-smtp1.png" alt="smtp_user"></p>
-<p>利用如下图:</p>
-<p>首先先如右边所示，利用TELNET将邮件发给WWW-DATA，然后再文件包含<code>/var/spool/mail/www-data</code><br><img src="http://ojv4vdr4o.bkt.clouddn.com/lfi-lfi_mail.png" alt="php"></p>
-<h2 id="利用上传时候的临时文件获得反向SHELL"><a href="#利用上传时候的临时文件获得反向SHELL" class="headerlink" title="利用上传时候的临时文件获得反向SHELL"></a>利用上传时候的临时文件获得反向SHELL</h2><blockquote>
-<p>php在上传时会产生一个临时文件，而这个临时文件会在HTTP会话结束之后删掉。可以用<code>move_upload_file</code>函数来将临时文件移动到另外的位置。如果在这个会话结束之前，将临时文件包含就可以执行反向的shell等命令。 详细如见:<a href="http://gynvael.coldwind.pl/download.php?f=PHP_LFI_rfc1867_temporary_files.pdf" target="_blank" rel="external">PHP_LFI_rfc1867_temporary_files</a></p>
-</blockquote>
-<p>这个没有将代码写完，先做一个记录。 可见案例<a href="http://static.hx99.net/static/bugs/wooyun-2015-0134185.html" target="_blank" rel="external">链家旗下自如某站一个有意思的文件包含到简单内网渗透（本地文件包含getshell技巧）</a></p>
-<h1 id="links"><a href="#links" class="headerlink" title="links"></a>links</h1><p><a href="http://php.net/manual/en/wrappers.php.php" target="_blank" rel="external">php wrappers</a></p>
-<h1 id="设置环境"><a href="#设置环境" class="headerlink" title="设置环境"></a>设置环境</h1><blockquote>
-<p>这里有一部分是在WINDOWS下使用的，另外一部分是在linux下。<br>在windows下的是用的phpStudy， 可以自行设置，linux是使用的kali</p>
-</blockquote>
-<h2 id="git-clone-form-github"><a href="#git-clone-form-github" class="headerlink" title="git clone form github"></a>git clone form github</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd /var/www/html/</div><div class="line">git clone https://github.com/s4n7h0/xvwa.git</div></pre></td></tr></table></figure>
-<h2 id="change-php7-to-php5"><a href="#change-php7-to-php5" class="headerlink" title="change php7 to php5"></a>change php7 to php5</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">apt-get install php5 php-pear php-mysql</div><div class="line">//this fit for apache</div><div class="line">//from php7 to php5</div><div class="line">a2dismod php7.0</div><div class="line">a2enmod php5.6</div><div class="line">service apache2 restart</div></pre></td></tr></table></figure>
-<h2 id="change-config-php"><a href="#change-config-php" class="headerlink" title="change config.php"></a>change config.php</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$XVWA_WEBROOT = &apos;&apos;;</div><div class="line">$host = &quot;localhost&quot;;</div><div class="line">$dbname = &apos;xvwa&apos;;</div><div class="line">$user = &apos;root&apos;;</div><div class="line">$pass = &apos;&apos;;</div></pre></td></tr></table></figure>
-
+          
       
     </div>
     
@@ -334,6 +278,10 @@
         <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web安全/">web安全</a></li></ul>
     </div>
 
+      
+        <p class="article-more-link">
+          <a href="/2017/02/22/lfi/#more">阅读全文 >></a>
+        </p>
       
       <div class="clearfix"></div>
     </div>
