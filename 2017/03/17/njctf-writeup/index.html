@@ -15,19 +15,25 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="description" content="这次比赛暴露了一些知识层面的不足， 也有一些遗憾的事。MISC就不在这里写了。只写WEB
+
+get flag通过更改flag的值，如改成flag.txt，可以看到返回的base64编码。这同时也是一个目录遍历漏洞过滤了|, 但是可以通过&amp;amp;&amp;amp;来绕过.最后结果如下:">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2017/01/16/hello-world/index.html">
+<meta property="og:title" content="Njctf-Writeup">
+<meta property="og:url" content="http://yoursite.com/2017/03/17/njctf-writeup/index.html">
 <meta property="og:site_name" content="shin's blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
-<meta property="og:updated_time" content="2017-01-16T03:40:14.000Z">
+<meta property="og:description" content="这次比赛暴露了一些知识层面的不足， 也有一些遗憾的事。MISC就不在这里写了。只写WEB
+
+get flag通过更改flag的值，如改成flag.txt，可以看到返回的base64编码。这同时也是一个目录遍历漏洞过滤了|, 但是可以通过&amp;amp;&amp;amp;来绕过.最后结果如下:">
+<meta property="og:image" content="http://yoursite.com//ojv4vdr4o.bkt.clouddn.com/njctf-get-flag.png">
+<meta property="og:image" content="http://ojv4vdr4o.bkt.clouddn.com/njctf-text-wall.png">
+<meta property="og:updated_time" content="2017-03-17T13:37:11.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="twitter:title" content="Njctf-Writeup">
+<meta name="twitter:description" content="这次比赛暴露了一些知识层面的不足， 也有一些遗憾的事。MISC就不在这里写了。只写WEB
+
+get flag通过更改flag的值，如改成flag.txt，可以看到返回的base64编码。这同时也是一个目录遍历漏洞过滤了|, 但是可以通过&amp;amp;&amp;amp;来绕过.最后结果如下:">
+<meta name="twitter:image" content="http://yoursite.com//ojv4vdr4o.bkt.clouddn.com/njctf-get-flag.png">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -59,7 +65,7 @@ Quick">
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Hello World | shin&#39;s blog</title>
+<title>Njctf-Writeup | shin&#39;s blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -220,11 +226,11 @@ Quick">
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-njctf-writeup" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/16/hello-world/" class="article-date">
-      <time datetime="2017-01-16T03:40:14.000Z" itemprop="datePublished">2017-01-16</time>
+      <a href="/2017/03/17/njctf-writeup/" class="article-date">
+      <time datetime="2017-03-17T13:04:19.000Z" itemprop="datePublished">2017-03-17</time>
 </a>
 
 
@@ -239,7 +245,7 @@ Quick">
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      Njctf-Writeup
     </h1>
   
 
@@ -249,6 +255,10 @@ Quick">
         
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf-web安全/">ctf, web安全</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
@@ -256,15 +266,27 @@ Quick">
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <blockquote>
+<p>这次比赛暴露了一些知识层面的不足， 也有一些遗憾的事。MISC就不在这里写了。只写WEB</p>
+</blockquote>
+<h1 id="get-flag"><a href="#get-flag" class="headerlink" title="get flag"></a>get flag</h1><p>通过更改flag的值，如改成flag.txt，可以看到返回的base64编码。这同时也是一个目录遍历漏洞<br>过滤了<code>|</code>, 但是可以通过<code>&amp;&amp;</code>来绕过.<br>最后结果如下:<br><img src="//ojv4vdr4o.bkt.clouddn.com/njctf-get-flag.png" alt="get-flag"><br><a id="more"></a></p>
+<h1 id="login"><a href="#login" class="headerlink" title="login"></a>login</h1><p>这个和sqli-labs的一道题很像。一般我们在创建数据库的时候，都喜欢这样<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">create table table_name(</div><div class="line">username varchar(40),</div><div class="line">password varchar(32),</div><div class="line">);</div></pre></td></tr></table></figure></p>
+<p>如果在得到用户输入的长度超过声明的位数时，就可能导致同一个用户名。<br>这题就是如此，注册一个<code>admin&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;a</code>的用户，然后数据在判断的时候会将其截断，以admin用登录。</p>
+<h1 id="text-wall"><a href="#text-wall" class="headerlink" title="text wall"></a>text wall</h1><p>这个题明明我已经看到解法了，但是没找到隐藏的源文件…<br>是一个PHP反序列化的解法。</p>
+<p>必须满足三个条件</p>
+<ol>
+<li><p>应用程序中必须包含一个实现某个PHP魔幻方法(<strong>wakeup,</strong>destruct)的类</p>
+</li>
+<li><p>当调用脆弱的unserialize()时，必须声明攻击期间所使用的所有的类,否则必须为这些类支持对象自动加载</p>
+</li>
+<li>传递给反序列化操作的数据必须来自于一个文件，所以服务器上必须包含有一个包含序列化数据的文件。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">class Example&#123;</div><div class="line">    var $v = &quot;&quot;;</div><div class="line">        function __destruct()&#123;</div><div class="line">            eval($this-&gt;v);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">class foo&#123;</div><div class="line">    public $file = &quot;&quot;;</div><div class="line">        public $data = &quot;&quot;;</div><div class="line">    function __wakeup()&#123;</div><div class="line">        file_put_contents($this-&gt;file, $this-&gt;data);</div><div class="line">        echo &quot;call _wakeup&quot;;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"># 实例化一个类并传入参数</div><div class="line">$var = &quot;phpinfo()&quot;;</div><div class="line">    $test = new Example();</div><div class="line">$test-&gt;v = &apos;phpinfo();&apos;;</div><div class="line">    echo serialize($test);</div><div class="line"># 实例化第二个类并传入参数，再将其序列化。</div><div class="line">$test2 = new foo();</div><div class="line">    $test2-&gt;file = &apos;un_test.php&apos;;</div><div class="line">$test2-&gt;data = &apos;&lt;?php phpinfo();?&gt;&apos;;</div><div class="line">    //echo serialize($test2).&quot;&lt;br/&gt;&quot;;</div><div class="line">$str = $_GET[&apos;name&apos;];</div><div class="line">echo $str.&apos;&lt;br/&gt;&apos;;</div><div class="line">    var_dump(unserialize($test));</div><div class="line">#  eval(&quot;phpinfo()&quot;);</div><div class="line">#  上述这个不会执行，因为&apos;phpinfo()&apos; 这并不一条完整的语句，会报错为</div><div class="line">#  Notice: Undefined index: name in C:\phpStudy\WWW\test.php on line 3</div><div class="line">#  Parse error: syntax error, unexpected $end in C:\phpStudy\WWW\test.php(6) : eval()&apos;d code on line 1</div><div class="line"># 而 eval(&quot;phpinfo();&quot;);会正确执行</div><div class="line"># 同时，如果 @eval(&apos;phpinfo()&apos;); 不会报错，因为有 @</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
+<p>所以在cookie中看到 list=xxx 之后，分析一下得到前40个字符是后边序列化内容的sha1值。<br>在 <code>.index.php.swo</code>文件中我们可以看到源类为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">$lists = [];</div><div class="line">Class filelist&#123;</div><div class="line">    public function __toString()</div><div class="line">    &#123;</div><div class="line">        return highlight_file(&apos;hiehiehie.txt&apos;, true).highlight_file($this-&gt;source, true);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">........</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
+<p>那么这是一个文件包含类型的漏洞。首先构造<code>a:1:{i:0;O:8:&quot;filelist&quot;:1:{s:6:&quot;source&quot;;s:9:&quot;index.php&quot;;}}</code> 来读到flag的位置。</p>
+<p><img src="http://ojv4vdr4o.bkt.clouddn.com/njctf-text-wall.png" alt="text-wall"><br>再重新构造一个反序列化字符串上传即可。</p>
+<h2 id="be-admin"><a href="#be-admin" class="headerlink" title="be admin"></a>be admin</h2><p>这个题是一个oracle padding的题。无奈的是我知道这个题但是我解不出来。还没有理解好oracle padding的事，等理解完了再来更新。</p>
 
       
     </div>
@@ -273,13 +295,13 @@ Quick">
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/01/16/hello-world/">Hello World</a></p>
+        <p><span>本文标题:</span><a href="/2017/03/17/njctf-writeup/">Njctf-Writeup</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Shinpachi8</a></p>
-        <p><span>发布时间:</span>2017-01-16, 11:40:14</p>
-        <p><span>最后更新:</span>2017-01-16, 11:40:14</p>
+        <p><span>发布时间:</span>2017-03-17, 21:04:19</p>
+        <p><span>最后更新:</span>2017-03-17, 21:37:11</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/16/hello-world/" title="Hello World">http://yoursite.com/2017/01/16/hello-world/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/01/16/hello-world/　　作者: Shinpachi8" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/03/17/njctf-writeup/" title="Njctf-Writeup">http://yoursite.com/2017/03/17/njctf-writeup/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/03/17/njctf-writeup/　　作者: Shinpachi8" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -291,12 +313,12 @@ Quick">
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/01/18/hctf-2016-write-up/">
-                    Hctf 2016 Write Up
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/03/04/redis利用小结/">
+                    Redis利用小结
                 </a>
             </div>
-        
         
     </nav>
 
@@ -306,7 +328,7 @@ Quick">
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#get-flag"><span class="toc-number">1.</span> <span class="toc-text">get flag</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#login"><span class="toc-number">2.</span> <span class="toc-text">login</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#text-wall"><span class="toc-number">3.</span> <span class="toc-text">text wall</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#be-admin"><span class="toc-number">3.1.</span> <span class="toc-text">be admin</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -342,7 +364,7 @@ Quick">
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Hello World　| shin's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Njctf-Writeup　| shin's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -358,7 +380,7 @@ Quick">
     
       <div class="duoshuo" id="comments">
     <div id="comment-box" ></div>
-    <div class="ds-thread" id="ds-thread" data-thread-key="2017/01/16/hello-world/" data-title="Hello World" data-url="http://yoursite.com/2017/01/16/hello-world/"></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2017/03/17/njctf-writeup/" data-title="Njctf-Writeup" data-url="http://yoursite.com/2017/03/17/njctf-writeup/"></div>
     <script>
         var duoshuoQuery = {short_name:"shinpachi8"};
         var loadComment = function(){
@@ -371,7 +393,7 @@ Quick">
         
             // Add comment count
             $(function(){ 
-                var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=shinpachi8&threads=2017/01/16/hello-world/&callback=?";
+                var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=shinpachi8&threads=2017/03/17/njctf-writeup/&callback=?";
                 $.getJSON(jsonUrl, function(result){
                     $.each(result.response, function(i, field){
                         var value = field.comments;
@@ -418,15 +440,15 @@ Quick">
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/01/18/hctf-2016-write-up/" title="上一篇: Hctf 2016 Write Up">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+            <a href="/2017/03/04/redis利用小结/" title="下一篇: Redis利用小结">
+                <i class="fa fa-angle-right"></i>
+            </a>
         
     </div>
 
