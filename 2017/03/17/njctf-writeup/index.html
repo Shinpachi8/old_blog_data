@@ -27,7 +27,7 @@ get flag通过更改flag的值，如改成flag.txt，可以看到返回的base64
 get flag通过更改flag的值，如改成flag.txt，可以看到返回的base64编码。这同时也是一个目录遍历漏洞过滤了|, 但是可以通过&amp;amp;&amp;amp;来绕过.最后结果如下:">
 <meta property="og:image" content="http://ojv4vdr4o.bkt.clouddn.com/njctf-get-flag.png">
 <meta property="og:image" content="http://ojv4vdr4o.bkt.clouddn.com/njctf-text-wall.png">
-<meta property="og:updated_time" content="2017-03-17T13:45:57.000Z">
+<meta property="og:updated_time" content="2017-03-17T13:48:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Njctf2017-Writeup">
 <meta name="twitter:description" content="这次比赛暴露了一些知识层面的不足， 也有一些遗憾的事。MISC就不在这里写了。只写WEB
@@ -288,7 +288,7 @@ get flag通过更改flag的值，如改成flag.txt，可以看到返回的base64
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">$lists = [];</div><div class="line">Class filelist&#123;</div><div class="line">    public function __toString()</div><div class="line">    &#123;</div><div class="line">        return highlight_file(&apos;hiehiehie.txt&apos;, true).highlight_file($this-&gt;source, true);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">........</div><div class="line">?&gt;</div></pre></td></tr></table></figure>
 <p>那么这是一个文件包含类型的漏洞。首先构造<code>a:1:{i:0;O:8:&quot;filelist&quot;:1:{s:6:&quot;source&quot;;s:9:&quot;index.php&quot;;}}</code> 来读到flag的位置。</p>
 <p><img src="http://ojv4vdr4o.bkt.clouddn.com/njctf-text-wall.png" alt="text-wall"><br>再重新构造一个反序列化字符串上传即可。</p>
-<h2 id="be-admin"><a href="#be-admin" class="headerlink" title="be admin"></a>be admin</h2><p>这个题是一个oracle padding的题。无奈的是我知道这个题但是我解不出来。还没有理解好oracle padding的事，等理解完了再来更新。</p>
+<h1 id="be-admin"><a href="#be-admin" class="headerlink" title="be admin"></a>be admin</h1><p>这个题是一个oracle padding的题。无奈的是我知道这个题但是我解不出来。还没有理解好oracle padding的事，等理解完了再来更新。</p>
 
       
     </div>
@@ -300,7 +300,7 @@ get flag通过更改flag的值，如改成flag.txt，可以看到返回的base64
         <p><span>本文标题:</span><a href="/2017/03/17/njctf-writeup/">Njctf2017-Writeup</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Shinpachi8</a></p>
         <p><span>发布时间:</span>2017-03-17, 21:04:19</p>
-        <p><span>最后更新:</span>2017-03-17, 21:45:57</p>
+        <p><span>最后更新:</span>2017-03-17, 21:48:36</p>
         <p>
             <span>原始链接:</span><a class="post-url" href="/2017/03/17/njctf-writeup/" title="Njctf2017-Writeup">http://yoursite.com/2017/03/17/njctf-writeup/</a>
             <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/03/17/njctf-writeup/　　作者: Shinpachi8" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
@@ -330,7 +330,7 @@ get flag通过更改flag的值，如改成flag.txt，可以看到返回的base64
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#get-flag"><span class="toc-number">1.</span> <span class="toc-text">get flag</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#login"><span class="toc-number">2.</span> <span class="toc-text">login</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#text-wall"><span class="toc-number">3.</span> <span class="toc-text">text wall</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#be-admin"><span class="toc-number">3.1.</span> <span class="toc-text">be admin</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#get-flag"><span class="toc-number">1.</span> <span class="toc-text">get flag</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#login"><span class="toc-number">2.</span> <span class="toc-text">login</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#text-wall"><span class="toc-number">3.</span> <span class="toc-text">text wall</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#be-admin"><span class="toc-number">4.</span> <span class="toc-text">be admin</span></a></li></ol>
         
     </div>
     <style>
