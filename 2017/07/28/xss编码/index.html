@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Shinpachi8" />
+
+
+
+<meta name="description" content="在公司里实习一段时间，收获很大，其中之一就是对于XSS的漏洞挖的更多了。之前认识XSS的危害不够，后来发现自己的认识浅薄。XSS能够在OWASP的TOP10排名上久居不下，是有其道理的。但是长久以来，自己对XSS的认识就是乱插，姿势对了就爽了，姿势不对疼。所以这一篇是讲XSS的编码，以及一些XSS基础知识与防护。
+
+XSS是什么XSS(Cross-Site Scripting)跨站脚本攻击，本质">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Xss编码">
+<meta property="og:url" content="http://yoursite.com/2017/07/28/xss编码/index.html">
+<meta property="og:site_name" content="shin's blog">
+<meta property="og:description" content="在公司里实习一段时间，收获很大，其中之一就是对于XSS的漏洞挖的更多了。之前认识XSS的危害不够，后来发现自己的认识浅薄。XSS能够在OWASP的TOP10排名上久居不下，是有其道理的。但是长久以来，自己对XSS的认识就是乱插，姿势对了就爽了，姿势不对疼。所以这一篇是讲XSS的编码，以及一些XSS基础知识与防护。
+
+XSS是什么XSS(Cross-Site Scripting)跨站脚本攻击，本质">
+<meta property="og:updated_time" content="2017-07-29T02:39:58.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Xss编码">
+<meta name="twitter:description" content="在公司里实习一段时间，收获很大，其中之一就是对于XSS的漏洞挖的更多了。之前认识XSS的危害不够，后来发现自己的认识浅薄。XSS能够在OWASP的TOP10排名上久居不下，是有其道理的。但是长久以来，自己对XSS的认识就是乱插，姿势对了就爽了，姿势不对疼。所以这一篇是讲XSS的编码，以及一些XSS基础知识与防护。
+
+XSS是什么XSS(Cross-Site Scripting)跨站脚本攻击，本质">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="shin&#39;s blog" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Xss编码 | shin&#39;s blog</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: true
+    }
+</script>
+
+
+    <script>
+        yiliaConfig.jquery_ui = [true, "//cdn.bootcss.com/jqueryui/1.10.4/jquery-ui.min.js", "//cdn.bootcss.com/jqueryui/1.10.4/css/jquery-ui.min.css"];
+    </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/assets/img/shinpachi.JPG" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Shinpachi8</a></h1>
+        </hgroup>
+
+        
+        <p class="header-subtitle">远看泰山黑乎乎</p>
+        
+
+        
+            <form id="search-form">
+            <input type="text" id="local-search-input" name="q" placeholder="search..." class="search form-control" autocomplete="off" autocorrect="off" searchonload="false" />
+            <i class="fa fa-times" onclick="resetSearch()"></i>
+            </form>
+            <div id="local-search-result"></div>
+            <p class='no-result'>No results found <i class='fa fa-spinner fa-pulse'></i></p>
+        
+
+
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                            <li><a href="/friendlink/">友链</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Shinpachi8</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/assets/img/shinpachi.JPG" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Shinpachi8</a></h1>
+            </hgroup>
+            
+            <p class="header-subtitle">远看泰山黑乎乎</p>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                    <li><a href="/friendlink/">友链</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:123@123.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="#" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-xss编码" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/28/xss编码/" class="article-date">
+      <time datetime="2017-07-28T14:20:19.000Z" itemprop="datePublished">2017-07-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Xss编码
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xss/">xss</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <blockquote>
+<p>在公司里实习一段时间，收获很大，其中之一就是对于XSS的漏洞挖的更多了。之前认识XSS的危害不够，后来发现自己的认识浅薄。XSS能够在OWASP的TOP10排名上久居不下，是有其道理的。<br>但是长久以来，自己对XSS的认识就是乱插，姿势对了就爽了，姿势不对疼。所以这一篇是讲XSS的编码，以及一些XSS基础知识与防护。</p>
+</blockquote>
+<h1 id="XSS是什么"><a href="#XSS是什么" class="headerlink" title="XSS是什么"></a>XSS是什么</h1><p>XSS(Cross-Site Scripting)跨站脚本攻击，本质上来说是一种Injection。不过注入的是一些HTML代码。XSS分为以下几类</p>
+<ol>
+<li>存储型的XSS</li>
+<li>反射型的XSS</li>
+<li>DOM的XSS(反射/存储XSS的)</li>
+</ol>
+<p>从其中的名称就可以分别出来: 一个是持久型的，例如存入数据库，等下一个用户取出来时就会自动渲染并执行。隐蔽性很强，盗人COOKIE与无形中。 反射型的XSS也叫非持久型的XSS，且需要交互较强。是以危害略小。 而DOM型的XSS，根据不同的位置，也会出来存储与反射两种。 要理解DOM的XSS，首先要理解 DOM(文档对象模型)。 这里不是介绍前端，所以可以<a href="http://www.w3school.com.cn/htmldom/dom_intro.asp" target="_blank" rel="external">参考这个</a> 来了解 DOM</p>
+<p>那么接着说XSS。<br>XSS的难点是理解Javascript，如果不会JavaScrpit，那么很难搞定XSS的高级用户，听说黑哥可以用XSS来探测内网信息，或者XSS蠕虫。(but most of all, samy is my hero)。 我对JavaScript也不是很熟，所以这里自己学习的一些基础，如果各位大佬看到了不要笑话。</p>
+<a id="more"></a>
+<h1 id="XSS如何攻击。"><a href="#XSS如何攻击。" class="headerlink" title="XSS如何攻击。"></a>XSS如何攻击。</h1><p>talk is cheap, show me the code.<br>先以一个小例子来说，如果代码写成这样：</p>
+<p>1.php<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line">    echo $_GET[&apos;username&apos;];</div><div class="line">?&gt;</div></pre></td></tr></table></figure></p>
+<p>那么如果访问<code>localhost/1.php?username=&lt;script&gt;alert(1)&lt;/script&gt;</code> 就会直接弹1。<br>之前我的水平大概就是在这里吧。 用一个payload去插，然后就不管了。:)<br>虽然见框就X是一个XSSER的优秀品质，但是在实习的时候发现这样姿势容易打脸。<br>因为并不是所有的输出点都会这样直接。 所以抽时间研究了一下XSS的编码问题，解锁了新的姿势，X的更欢快了。</p>
+<h1 id="XSS编码"><a href="#XSS编码" class="headerlink" title="XSS编码"></a>XSS编码</h1><p>这里首先要说的是几大编码问题:</p>
+<ol>
+<li><p>js编码</p>
+<blockquote>
+<p>js编码有十六进制编码，unicode编码，八进制编码等。</p>
+</blockquote>
+<p> 这里对<code>l</code>分别进行编码<br> unicode编码:  \u006c<br> 十六进制:       \x6c<br> 八进制:        \154</p>
+</li>
+<li><p>HTML实体编码</p>
+<blockquote>
+<p>在HTML中有一些字符是预留的， 比如<code>&lt;</code>, <code>&gt;</code>这些。 浏览器会认为它们是标签的结束和开始,所以遇到这些符号时，需要做转码</p>
+</blockquote>
+<p> 常见的HTML转码如下,所以的编码请<a href="http://www.w3school.com.cn/html/html_entities.asp" target="_blank" rel="external">参考</a>:<br> <code>&lt;</code> : <code>&amp;lt;</code>或者<code>&amp;#60;</code><br> <code>&gt;</code> : <code>&amp;gt;</code> 或者 <code>&amp;#62;</code></p>
+</li>
+</ol>
+<ol>
+<li>URL编码<blockquote>
+<p>是浏览器用来打包表单输入的一种方法，参数以&amp;,=分成不同的键值对。对于特殊字符如<code>&amp;</code>,<code>=</code>就需要用%+十六进制来转换，如空格的URL编码是%20</p>
+</blockquote>
+</li>
+</ol>
+<p>简单介绍完这几种，那么正菜开始了.</p>
+<ol>
+<li>复合编码</li>
+</ol>
+<ul>
+<li>第一个案例<br>如果一个php文件是这么写的：<br>2.php</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;a href=&lt;?php echo $_GET[&apos;username&apos;] ?&gt;&gt;can u click me&lt;/a&gt;</div></pre></td></tr></table></figure>
+<p>那么应该如何 编码呢？<br>这里就要说一下浏览器的解码顺序了。如果有哪说的不对请各位大佬指出来…</p>
+<p>浏览器在解析HTML时，首先会加载HTML文件，然后构造DOM结构的来显示。当然这里只是说HTML的编码部分。在解析HTML中，首先会对HTML编码的部分进行解码，以得到正确的值。 如果遇到<code>&lt;SCRIPT&gt;</code>标签时，会调用javascript解析器来解析javascript,并执行。接着返回中断的HTML，<br>如果遇到事件（例如: onclick）会调用脚本解析。 如果<code>href</code>里有URL编码，还会进行URL解码。</p>
+<p>所以上边的可以用HTML解码-&gt;URL解码-&gt;JS解码的顺序<br></p>
+<p>上边的可以用javascript:alert(1)来弹窗，这时没有解析;<br></p>
+<p>也可以用<code>%26%23106%3B%26%2397%3B%26%23118%3B%26%2397%3Bscript:alert(1)</code><br></p>
+<p>这时因为传入的是一个URL，所以会默认先进行URL解码，这时就和我们直接在代码里入<code>&lt;textarea&gt;&lt;a href=&quot;&amp;#106;&amp;#97;&amp;#118;&amp;#97;script:alert(1)&quot;&gt;11&lt;/a&gt;&lt;/textarea&gt;</code>是一样的，<br></p>
+<p>&nbsp;&nbsp;&nbsp;即这里的实际的解码顺序为HTML解码成功<br></p>
+<pre><code>`&lt;a href=&quot;&amp;#106;&amp;#97;&amp;#118;&amp;#97;script:%61%6c%65%72t(1)&quot;&gt;html-&gt;url&lt;/a&gt;`
+</code></pre><p>这里前半部分使用的HTML编码，后边aler使用的URL编码，也是可以的，那么js在哪？<br></p>
+<p>这里用\u将aler进行unicode编码，再URL编码，解码发现只剩下了javascript:\u61\u6c,代码无法执行<code>&lt;a href=&quot;&amp;#106;&amp;#97;&amp;#118;&amp;#97;script:%5c%75%36%31%5c%75%36%63%5c%75%36%35%5c%75%37%32t(1)&quot;&gt;html-&gt;url&lt;/a&gt;</code></p>
+<p>&nbsp;&nbsp;&nbsp; 那么换一个，先用js编码，再用url编码<code>&lt;a href=&quot;javascript:%5c%75%30%30%36%31%5c%75%30%30%36%63%5c%75%30%30%36%35%5c%75%30%30%37%32%5c%75%30%30%37%34(3)&quot;&gt;url-&gt;js&lt;/a&gt;</code><br></p>
+<p>综上所述，这里可以是一个HTML解码-&gt;URL解码-&gt;JS解码的过程，相对应的，我们可以用JS编码-&gt;URL编码-&gt;HTML编码来绕过</p>
+<ul>
+<li>第二个案例：</li>
+</ul>
+<p><code>&lt;img src=&quot;x&quot; onerror=&lt;?php echo$_GET[&#39;username&#39;] ?&gt;&gt;&lt;/br&gt;</code></p>
+<p>分析： 这个首先在一个JS中，因为所有的事件都属于Javascript，然后在HTML中，这里应该两层编码</p>
+<p>&nbsp;&nbsp; 首先试一下js编码 <code>&lt;img src=&quot;x&quot; onerror=&quot;j\u0061vascript:\u0061\u006c\u0065\u0072\u0074(&#39;jsencode&#39;)&quot;&gt;</code> 这是可以执行的</p>
+<p>&nbsp;&nbsp; 再试一下JS编码-&gt;HTML编码</p>
+<p><code>&lt;img src=&quot;x&quot; onerror=&quot;&amp;#106;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#54;&amp;#49;&amp;#118;&amp;#97;&amp;#115;&amp;#99;&amp;#114;&amp;#105;&amp;#112;&amp;#116;&amp;#58;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#54;&amp;#49;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#54;&amp;#99;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#54;&amp;#53;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#55;&amp;#50;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#55;&amp;#52;&amp;#40;&amp;#39;&amp;#106;&amp;#115;&amp;#45;&amp;#62;&amp;#104;&amp;#116;&amp;#109;&amp;#108;&amp;#101;&amp;#110;&amp;#99;&amp;#111;&amp;#100;&amp;#101;&amp;#39;&amp;#41;&quot;&gt;</code>然后发现也是可以弹的。</p>
+<p>所以这里的重点是分析用户所控的输出点在哪里，是一个什么样的环境，HTML代码如何解析。再针对性的进行多层编码，以绕过过滤限制</p>
+<h1 id="实际应用"><a href="#实际应用" class="headerlink" title="实际应用"></a>实际应用</h1><p>以freebuf一篇讲XSS编码的案例来分析吧:</p>
+<p>xssencode.php<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">&lt;?php</div><div class="line"></div><div class="line">function htmlencode($str)&#123;</div><div class="line">   if(empty($str)) return;</div><div class="line">   if($str == &quot;&quot;) return;</div><div class="line"></div><div class="line">   $str = str_ireplace(&quot;&lt;&quot;,&quot;&quot;,$str);</div><div class="line">   $str = str_ireplace(&quot;&gt;&quot;,&quot;&quot;,$str);</div><div class="line">   $str = str_ireplace(&quot;script&quot;,&quot;&quot;,$str);</div><div class="line">   $str = str_ireplace(&quot;img&quot;,&quot;&quot;,$str);</div><div class="line">   $str = str_ireplace(&quot;:&quot;,&quot;&quot;,$str);</div><div class="line">   $str = str_ireplace(&quot;javascript&quot;,&quot;&quot;,$str);</div><div class="line"></div><div class="line">   return $str;</div><div class="line">&#125;</div><div class="line"></div><div class="line">if(!array_key_exists (&quot;name&quot;,$_GET) || $_GET[&apos;name&apos;] == NULL || $_GET[&apos;name&apos;] == &apos;&apos;)&#123;</div><div class="line"></div><div class="line"> $isempty = true;</div><div class="line"></div><div class="line">&#125; else &#123;</div><div class="line"> $html = &apos;&apos;;</div><div class="line"> $html .= &apos;&lt;pre&gt;&apos;;</div><div class="line"> $html .= &apos;&lt;a onclick=&quot; &apos; .htmlencode($_GET[&apos;name&apos;]).&apos;&quot;&gt;click this url&lt;/a&gt;&apos;;</div><div class="line"> $html .= &apos;&lt;/pre&gt;&apos;;</div><div class="line"></div><div class="line"> echo $html;</div><div class="line">&#125;</div><div class="line">?&gt;</div><div class="line"></div><div class="line">&lt;html&gt;</div><div class="line">&lt;script&gt;</div><div class="line"></div><div class="line">&lt;/script&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure></p>
+<p>如果我们输入的是<code>view-source:http://127.0.0.1:20000/xssencode.php?name=javascript:alert(1)</code> 那么就会过滤成:<code>&lt;pre&gt;&lt;a onclick=&quot; javaalert(1)&quot;&gt;click this url&lt;/a&gt;&lt;/pre&gt;</code> 这样肯定不会触发。</p>
+<p>So，我们来分析一下这个姿势。<br>首先这个参数使用了htmlencode，然后出现在了一个onclick事件，即javascript中，然后这个javascript又在一个html中。 所以解码顺序是HTML解码，js解码。</p>
+<p>那么我们编码的时候可以用js编码来绕过。 看一下<br><code>&lt;a onclick=&quot;\u006a\u0061\u0076\u0061\u0073\u0063\u0072\u0069\u0070:\u0061\u006c\u0065\u0072\u0074(1)&quot;&gt;click this url&lt;/a&gt;</code> 这个已经可以弹窗了。</p>
+<p>但是现在过滤程序把<code>:</code>给过滤了,少了控制字符是不行的。所以我们直接用alert来试<br><code>&lt;a onclick=&quot;\u0061\u006c\u0065\u0072\u0074(1)&quot;&gt;click this url&lt;/a&gt;</code> 这个已经可以弹窗了。这样也绕过了htmlencode。</p>
+<p>那么这只是一层，能不能用HTML编码来绕过呢？<br>事实证明，我们也可以用<code>http://127.0.0.1:20000/xssencode.php?name=%26%2397%3B%26%23108%3B%26%23101%3B%26%23114%3B%26%23116%3B%26%2340%3B%26%2349%3B%26%2341%3B</code> 来绕过。 name的URL解码是<code>&amp;#97;&amp;#108;&amp;#101;&amp;#114;&amp;#116;&amp;#40;&amp;#49;&amp;#41;</code>即：alert(1)的HTML编码。</p>
+<p>那么复合编码呢？<br><code>&lt;a onclick=&quot;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#54;&amp;#97;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#54;&amp;#49;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#55;&amp;#54;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#54;&amp;#49;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#55;&amp;#51;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#54;&amp;#51;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#55;&amp;#50;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#54;&amp;#57;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#55;&amp;#48;&amp;#58;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#54;&amp;#49;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#54;&amp;#99;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#54;&amp;#53;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#55;&amp;#50;&amp;#92;&amp;#117;&amp;#48;&amp;#48;&amp;#55;&amp;#52;&amp;#40;&amp;#49;&amp;#41;&quot;&gt;click this url&lt;/a&gt;</code>也是可以弹窗的。 这个首先解码为<code>\u006a\u0061\u0076\u0061\u0073\u0063\u0072\u0069\u0070:\u0061\u006c\u0065\u0072\u0074(1)</code>然后由js解码为<code>javascript:alert(1)</code></p>
+<p>所以看, 如果直接使用<code>javascript:alert(1)</code>并无法绕过。但是多层编码之后就可以。<br>这也说明，并不是单纯的一层编码就可以解决XSS问题，还是结合具体的场景来分析。</p>
+<h1 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h1><p>这时要注意一点, 如果HTML将标签如<code>href</code>做了编码，这就影响了浏览器解析的结果，是不能执行弹窗的。</p>
+<h1 id="Referer"><a href="#Referer" class="headerlink" title="Referer"></a>Referer</h1><p><a href="http://www.freebuf.com/articles/web/43285.html" target="_blank" rel="external">xss编码解析</a><br><a href="http://www.w3school.com.cn/html/html_entities.asp" target="_blank" rel="external">HTML编码</a><br><a href="https://www.owasp.org/index.php/XSS" target="_blank" rel="external">OWASP XSS</a><br><a href="https://security.yirendai.com/news/share/26" target="_blank" rel="external">浅谈XSS—字符编码和浏览器解析原理</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2017/07/28/xss编码/">Xss编码</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Shinpachi8</a></p>
+        <p><span>发布时间:</span>2017-07-28, 22:20:19</p>
+        <p><span>最后更新:</span>2017-07-29, 10:39:58</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2017/07/28/xss编码/" title="Xss编码">http://yoursite.com/2017/07/28/xss编码/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/07/28/xss编码/　　作者: Shinpachi8" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/07/16/centos切换python2-7/">
+                    centos切换python2.7
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#XSS是什么"><span class="toc-number">1.</span> <span class="toc-text">XSS是什么</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XSS如何攻击。"><span class="toc-number">2.</span> <span class="toc-text">XSS如何攻击。</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#XSS编码"><span class="toc-number">3.</span> <span class="toc-text">XSS编码</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#实际应用"><span class="toc-number">4.</span> <span class="toc-text">实际应用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#注意事项"><span class="toc-number">5.</span> <span class="toc-text">注意事项</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Referer"><span class="toc-number">6.</span> <span class="toc-text">Referer</span></a></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-5 i,
+        .toc-level-5 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Xss编码　| shin's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+      <div class="duoshuo" id="comments">
+    <div id="comment-box" ></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2017/07/28/xss编码/" data-title="Xss编码" data-url="http://yoursite.com/2017/07/28/xss编码/"></div>
+    <script>
+        var duoshuoQuery = {short_name:"shinpachi8"};
+        var loadComment = function(){
+            var d = document, s = d.createElement('script');
+            s.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+            s.async = true; s.charset = 'UTF-8';
+            (d.head || d.body).appendChild(s);
+        }
+
+        
+            // Add comment count
+            $(function(){ 
+                var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=shinpachi8&threads=2017/07/28/xss编码/&callback=?";
+                $.getJSON(jsonUrl, function(result){
+                    $.each(result.response, function(i, field){
+                        var value = field.comments;
+                        if (value > 0) {
+                            $(".count-comment").text(value);
+                            return;
+                        }
+                    })
+                })
+            })
+        
+    </script>
+    
+    <aside class="comment-bar">
+        <a href="javascript:void(0);">
+            <i class="fa fa-commenting-o animated infinite pulse"></i>
+            <i class="fa fa-spinner fa-pulse"></i>
+            <span class="count-comment"></span>
+        </a>
+    </aside>
+    <script>
+        var $commentBar = $("#comments aside.comment-bar");
+        var load$hide = function(){
+            $commentBar.find("a > i").toggle();
+            loadComment();
+            $commentBar.fadeOut(800);
+        }
+        $commentBar.click(function(){
+            load$hide();
+        })
+        $commentBar.children("a").hover(function(){
+            load$hide();
+        })
+        if (window.location.hash === "#comments") {
+            load$hide();
+        }
+    </script>
+
+</div>
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2017/07/16/centos切换python2-7/" title="下一篇: centos切换python2.7">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2017/07/28/xss编码/">Xss编码</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/07/16/centos切换python2-7/">centos切换python2.7</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/12/信息收集工具之处理subDomainBrute结果/">信息收集工具之处理subDomainBrute结果</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/04/03/python多线程中setDaemon与join的问题/">python多线程中setDaemon与join的问题</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/20/bluecms-v1-6-audit/">Bluecms-v1.6-Audit</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/17/njctf2017-writeup-md/">Njctf2017-Writeup</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/03/04/redis利用小结/">Redis利用小结</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/02/22/lfi/">本地文件包含简单练习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/19/xnuca/">Xnuca</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/18/xxe漏洞及xxe练习/">Xxe漏洞及xxe练习</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/18/hctf-2016-write-up/">Hctf 2016 Write Up</a></li><li class="post-list-item"><a class="post-list-link" href="/2017/01/16/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016-2017 Shinpachi8
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 6;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

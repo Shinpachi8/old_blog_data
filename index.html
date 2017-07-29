@@ -220,6 +220,80 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-xss编码" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/28/xss编码/" class="article-date">
+      <time datetime="2017-07-28T14:20:19.000Z" itemprop="datePublished">2017-07-28</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/28/xss编码/">Xss编码</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <blockquote>
+<p>在公司里实习一段时间，收获很大，其中之一就是对于XSS的漏洞挖的更多了。之前认识XSS的危害不够，后来发现自己的认识浅薄。XSS能够在OWASP的TOP10排名上久居不下，是有其道理的。<br>但是长久以来，自己对XSS的认识就是乱插，姿势对了就爽了，姿势不对疼。所以这一篇是讲XSS的编码，以及一些XSS基础知识与防护。</p>
+</blockquote>
+<h1 id="XSS是什么"><a href="#XSS是什么" class="headerlink" title="XSS是什么"></a>XSS是什么</h1><p>XSS(Cross-Site Scripting)跨站脚本攻击，本质上来说是一种Injection。不过注入的是一些HTML代码。XSS分为以下几类</p>
+<ol>
+<li>存储型的XSS</li>
+<li>反射型的XSS</li>
+<li>DOM的XSS(反射/存储XSS的)</li>
+</ol>
+<p>从其中的名称就可以分别出来: 一个是持久型的，例如存入数据库，等下一个用户取出来时就会自动渲染并执行。隐蔽性很强，盗人COOKIE与无形中。 反射型的XSS也叫非持久型的XSS，且需要交互较强。是以危害略小。 而DOM型的XSS，根据不同的位置，也会出来存储与反射两种。 要理解DOM的XSS，首先要理解 DOM(文档对象模型)。 这里不是介绍前端，所以可以<a href="http://www.w3school.com.cn/htmldom/dom_intro.asp">参考这个</a> 来了解 DOM</p>
+<p>那么接着说XSS。<br>XSS的难点是理解Javascript，如果不会JavaScrpit，那么很难搞定XSS的高级用户，听说黑哥可以用XSS来探测内网信息，或者XSS蠕虫。(but most of all, samy is my hero)。 我对JavaScript也不是很熟，所以这里自己学习的一些基础，如果各位大佬看到了不要笑话。</p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/xss/">xss</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/07/28/xss编码/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-centos切换python2-7" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -882,77 +956,6 @@
       
         <p class="article-more-link">
           <a href="/2017/01/18/xxe漏洞及xxe练习/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-hctf-2016-write-up" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/01/18/hctf-2016-write-up/" class="article-date">
-      <time datetime="2017-01-18T12:27:42.000Z" itemprop="datePublished">2017-01-18</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/18/hctf-2016-write-up/">Hctf 2016 Write Up</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>今年的hctf与几个哥们儿一起组队玩了一下。但是成绩比较惨淡。 但是还是把自己的writeup 写一下。 以做纪念。</p>
-<h1 id="签到题"><a href="#签到题" class="headerlink" title="签到题"></a>签到题</h1><p>签到的题目是一个pcap流量包。 在里边follow tcp stream， 可以看到以下的内容。<br><img src="http://img.blog.csdn.net/20161127204941170" alt="流量内容"><br>可以看到base64编码的<code>mbZoEMrhAO0WWeugNjqNw3U6Tt2C+rwpgpbdWRZgfQI3MAh0sZ9qjnziUKkV90XhAOkIs/OXoYVw5uQDjVvgNA==</code><br>还有一个加密的function.py</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># coding:utf-8</span></div><div class="line">__author__ = <span class="string">'Aklis'</span></div><div class="line"></div><div class="line"><span class="keyword">from</span> Crypto <span class="keyword">import</span> Random</div><div class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</div><div class="line"></div><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">import</span> base64</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">decrypt</span><span class="params">(encrypted, passphrase)</span>:</span></div><div class="line">  IV = encrypted[:<span class="number">16</span>]</div><div class="line">  aes = AES.new(passphrase, AES.MODE_CBC, IV)</div><div class="line">  <span class="keyword">return</span> aes.decrypt(encrypted[<span class="number">16</span>:])</div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">def</span> <span class="title">encrypt</span><span class="params">(message, passphrase)</span>:</span></div><div class="line">  IV = message[:<span class="number">16</span>]</div><div class="line">  length = <span class="number">16</span></div><div class="line">  count = len(message)</div><div class="line">  padding = length - (count % length)</div><div class="line">  message = message + <span class="string">'\0'</span> * padding</div><div class="line">  aes = AES.new(passphrase, AES.MODE_CBC, IV)</div><div class="line">  <span class="keyword">return</span> aes.encrypt(message)</div><div class="line"></div><div class="line"></div><div class="line">IV = <span class="string">'YUFHJKVWEASDGQDH'</span></div><div class="line"></div><div class="line">message = IV + <span class="string">'flag is hctf&#123;xxxxxxxxxxxxxxx&#125;'</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">print</span> len(message)</div><div class="line"></div><div class="line">example = encrypt(message, <span class="string">'Qq4wdrhhyEWe4qBF'</span>)</div><div class="line"><span class="keyword">print</span> example</div><div class="line">example = decrypt(example, <span class="string">'Qq4wdrhhyEWe4qBF'</span>)</div><div class="line"><span class="keyword">print</span> example</div></pre></td></tr></table></figure>
-<p>解码之后是 <code>flag is hctf{n0w_U_w111_n0t_f1nd_me}</code><br>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/learn/">learn</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/">ctf</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/01/18/hctf-2016-write-up/#more">阅读全文 >></a>
         </p>
       
       <div class="clearfix"></div>
