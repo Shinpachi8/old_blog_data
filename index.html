@@ -220,6 +220,92 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-被动扫描那些事儿1" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/18/被动扫描那些事儿1/" class="article-date">
+      <time datetime="2017-08-18T14:22:15.000Z" itemprop="datePublished">2017-08-18</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/18/被动扫描那些事儿1/">被动扫描那些事儿1</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>之前一直在手工的做漏洞的挖掘，其优点在于准确度高，可以发现其中很深的漏洞以及逻辑问题，但是这也是它的缺点，在深度挖掘的时候，并不能覆盖到测试的方方面面，所以一个半自动的扫描工具很适合的这样的情况 。</p>
+<p>先来看一下主要的一些漏洞类型：</p>
+<ol>
+<li>越权</li>
+<li>XSS，包括反射与存储</li>
+<li>SQL注入</li>
+<li>XXE</li>
+<li>CSRF</li>
+<li>命令注入</li>
+<li>ImageMagick</li>
+<li>phpinfo/phpmyadmin泄露</li>
+<li>SSTI(server-side template injection)</li>
+<li>URL跳转与SSRF</li>
+</ol>
+<p>这些问题，其中反射型XSS最容易检测，SQL注入可以用sqlmapapi来进行， 命令注入与SSTI也可以自动化来检测，而越权， ImageMagick ，存储XSS可以自己来测试，因为需要提交的表单或者 AJAX并不是太多， 而CSRF的关注点在于如果存在重要操作时，或者在self-xss时才会显得重要，所以手工来测就可以了。</p>
+<p>这样的话，我们的目的就是一个被动扫描GET类型的反射XSS，SQL注入， 命令注入与 SSTI有扫描器。</p>
+<h1 id="扫描需要"><a href="#扫描需要" class="headerlink" title="扫描需要"></a>扫描需要</h1><ol>
+<li>一个代理</li>
+<li>扫描脚本</li>
+</ol>
+<h1 id="v-1-0-BurpSuite"><a href="#v-1-0-BurpSuite" class="headerlink" title="v 1.0 BurpSuite"></a>v 1.0 BurpSuite</h1><p>代理的话我第一版用的是burp， 每次使用burp suite时开启log保存，然后在代理结束之后对log进行解析，简单的进行解析，进行XSS与SQL注入扫描，探测是否存在URL跳转或者回显的SSRF(这里其实并不是SSRF，而是远程文件包含，但是目前没想到好的SSRF自动化发现的idea，所以拿这作为开头，因为存在远程文件包含的地方，可能会出现SSRF)。</p>
+<p>v1.0 版本是有一些问题的，其一就是时实性不好，在这方面burpsuite是硬伤，当然也可能是我太懒，毕竟觉得写一个监测脚本来监测log日志的增加是不明智的，而且可能会出现请求还没完全写入日志，就被脚本读取，这时候并不是一个完整 的URL请求，所以后边就放弃了这种想法。</p>
+<p>talk is cheap, show me the code<br><a href="https://github.com/Shinpachi8/Miscellaneous/tree/master/xssDetect">xssDetect</a><br>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/漏扫/">漏扫</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/08/18/被动扫描那些事儿1/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-xss编码" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -831,131 +917,6 @@
       
         <p class="article-more-link">
           <a href="/2017/01/19/xnuca/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-xxe漏洞及xxe练习" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/01/18/xxe漏洞及xxe练习/" class="article-date">
-      <time datetime="2017-01-18T12:42:51.000Z" itemprop="datePublished">2017-01-18</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/18/xxe漏洞及xxe练习/">Xxe漏洞及xxe练习</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <p>如果有问题请您指正。</p>
-<h1 id="XML基础"><a href="#XML基础" class="headerlink" title="XML基础"></a>XML基础</h1><blockquote>
-<p>xml 是 可扩展标记语言(EXtensible Markup Language)的缩写。它与HTML类似同为w3c推荐标准，但是比HTML要严谨。因为它所有的标签一定要闭合。 同时它也可以用自己定义的标签，但是XML是不作为的标记语言，不像HTML，XML只是将数据结构化存储与传输。 <a href="http://www.w3school.com.cn/xml/index.asp">w3cschool－xml的教程</a></p>
-</blockquote>
-<ol>
-<li><p>XML有关的几点：</p>
-<ul>
-<li><p>所有XML都必须要有关闭标签。</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">note</span>&gt;</span> this's note example <span class="tag">&lt;<span class="name">note</span>&gt;</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>所有XML的标签对大小写敏感</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">Message</span>&gt;</span> i've something to tell u <span class="tag">&lt;/<span class="name">Message</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">message</span>&gt;</span> the '<span class="tag">&lt;<span class="name">Message</span>&gt;</span>' is different with '<span class="tag">&lt;<span class="name">message</span>&gt;</span>' <span class="tag">&lt;/<span class="name">message</span>&gt;</span></div><div class="line"><span class="comment">&lt;!-- 在XML里不允许出现 &lt;|&gt;|'|"|&amp; 五个符号，上边出现是为了演示方便。 --&gt;</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>XML的属性值必须加引号</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">&lt;!-- wrong example --&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">note</span> <span class="attr">data</span>=<span class="string">8/2/16/</span>&gt;</span> <span class="tag">&lt;/<span class="name">note</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">&lt;!-- right example --&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">note</span> <span class="attr">data</span>=<span class="string">"08/02/16"</span>&gt;</span> <span class="tag">&lt;/<span class="name">note</span>&gt;</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>在XML中有五个符号需要实体引用</p>
-</li>
-</ul>
-</li>
-</ol>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">实体引用</th>
-<th style="text-align:center">符号</th>
-<th style="text-align:center">中文解释</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center"><code>&amp;lt;</code></td>
-<td style="text-align:center"><code>&lt;</code></td>
-<td style="text-align:center">小于号</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>&amp;gt;</code></td>
-<td style="text-align:center"><code>&gt;</code></td>
-<td style="text-align:center">大于号</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>&amp;amp;</code></td>
-<td style="text-align:center"><code>&amp;</code></td>
-<td style="text-align:center">和号</td>
-<td>c</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>&amp;apos;</code></td>
-<td style="text-align:center"><code>&#39;</code></td>
-<td style="text-align:center">单引号</td>
-</tr>
-<tr>
-<td style="text-align:center"><code>&amp;quot;</code></td>
-<td style="text-align:center"><code>&quot;</code></td>
-<td style="text-align:center">双引号</td>
-</tr>
-</tbody>
-</table>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-    <div class="article-category tagcloud">
-    <a class="article-category-link" href="/categories/learn/">learn</a>
-    </div>
-
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web安全/">web安全</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/01/18/xxe漏洞及xxe练习/#more">阅读全文 >></a>
         </p>
       
       <div class="clearfix"></div>

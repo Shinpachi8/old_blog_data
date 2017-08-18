@@ -220,6 +220,131 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-xxe漏洞及xxe练习" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/01/18/xxe漏洞及xxe练习/" class="article-date">
+      <time datetime="2017-01-18T12:42:51.000Z" itemprop="datePublished">2017-01-18</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/01/18/xxe漏洞及xxe练习/">Xxe漏洞及xxe练习</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>如果有问题请您指正。</p>
+<h1 id="XML基础"><a href="#XML基础" class="headerlink" title="XML基础"></a>XML基础</h1><blockquote>
+<p>xml 是 可扩展标记语言(EXtensible Markup Language)的缩写。它与HTML类似同为w3c推荐标准，但是比HTML要严谨。因为它所有的标签一定要闭合。 同时它也可以用自己定义的标签，但是XML是不作为的标记语言，不像HTML，XML只是将数据结构化存储与传输。 <a href="http://www.w3school.com.cn/xml/index.asp">w3cschool－xml的教程</a></p>
+</blockquote>
+<ol>
+<li><p>XML有关的几点：</p>
+<ul>
+<li><p>所有XML都必须要有关闭标签。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">note</span>&gt;</span> this's note example <span class="tag">&lt;<span class="name">note</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>所有XML的标签对大小写敏感</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">Message</span>&gt;</span> i've something to tell u <span class="tag">&lt;/<span class="name">Message</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">message</span>&gt;</span> the '<span class="tag">&lt;<span class="name">Message</span>&gt;</span>' is different with '<span class="tag">&lt;<span class="name">message</span>&gt;</span>' <span class="tag">&lt;/<span class="name">message</span>&gt;</span></div><div class="line"><span class="comment">&lt;!-- 在XML里不允许出现 &lt;|&gt;|'|"|&amp; 五个符号，上边出现是为了演示方便。 --&gt;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>XML的属性值必须加引号</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">&lt;!-- wrong example --&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">note</span> <span class="attr">data</span>=<span class="string">8/2/16/</span>&gt;</span> <span class="tag">&lt;/<span class="name">note</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">&lt;!-- right example --&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">note</span> <span class="attr">data</span>=<span class="string">"08/02/16"</span>&gt;</span> <span class="tag">&lt;/<span class="name">note</span>&gt;</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>在XML中有五个符号需要实体引用</p>
+</li>
+</ul>
+</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">实体引用</th>
+<th style="text-align:center">符号</th>
+<th style="text-align:center">中文解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center"><code>&amp;lt;</code></td>
+<td style="text-align:center"><code>&lt;</code></td>
+<td style="text-align:center">小于号</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>&amp;gt;</code></td>
+<td style="text-align:center"><code>&gt;</code></td>
+<td style="text-align:center">大于号</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>&amp;amp;</code></td>
+<td style="text-align:center"><code>&amp;</code></td>
+<td style="text-align:center">和号</td>
+<td>c</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>&amp;apos;</code></td>
+<td style="text-align:center"><code>&#39;</code></td>
+<td style="text-align:center">单引号</td>
+</tr>
+<tr>
+<td style="text-align:center"><code>&amp;quot;</code></td>
+<td style="text-align:center"><code>&quot;</code></td>
+<td style="text-align:center">双引号</td>
+</tr>
+</tbody>
+</table>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/learn/">learn</a>
+    </div>
+
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web安全/">web安全</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/01/18/xxe漏洞及xxe练习/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-hctf-2016-write-up" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
