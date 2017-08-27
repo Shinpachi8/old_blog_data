@@ -15,19 +15,19 @@
 
 
 
-<meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="description" content="最近在写扫描器的时候发现如果写死在run函数里边是很不明智的这样的话每次都要将celery重启才可以生效，就想到了说可以不可以使用importlib来动态的导入如此一来后期的插件添加时就不再需要重启celery了.
+但是遇到了坑, 很容易就出现ImportError: No module named folder.script1或者TypeError: relative imports requi">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2017/01/16/hello-world/index.html">
+<meta property="og:title" content="Celery中使用importlib按需导包">
+<meta property="og:url" content="http://yoursite.com/2017/08/27/celery中使用importlib按需导包/index.html">
 <meta property="og:site_name" content="shin's blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
-<meta property="og:updated_time" content="2017-01-16T03:40:14.000Z">
+<meta property="og:description" content="最近在写扫描器的时候发现如果写死在run函数里边是很不明智的这样的话每次都要将celery重启才可以生效，就想到了说可以不可以使用importlib来动态的导入如此一来后期的插件添加时就不再需要重启celery了.
+但是遇到了坑, 很容易就出现ImportError: No module named folder.script1或者TypeError: relative imports requi">
+<meta property="og:updated_time" content="2017-08-27T13:48:09.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="twitter:title" content="Celery中使用importlib按需导包">
+<meta name="twitter:description" content="最近在写扫描器的时候发现如果写死在run函数里边是很不明智的这样的话每次都要将celery重启才可以生效，就想到了说可以不可以使用importlib来动态的导入如此一来后期的插件添加时就不再需要重启celery了.
+但是遇到了坑, 很容易就出现ImportError: No module named folder.script1或者TypeError: relative imports requi">
 
 <link rel="apple-touch-icon" href= "/apple-touch-icon.png">
 
@@ -59,7 +59,7 @@ Quick">
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
 
-<title>Hello World | shin&#39;s blog</title>
+<title>Celery中使用importlib按需导包 | shin&#39;s blog</title>
 
 <script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
 <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
@@ -220,11 +220,11 @@ Quick">
     </div>
     <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
 </nav>
-      <div class="body-wrap"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-celery中使用importlib按需导包" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/01/16/hello-world/" class="article-date">
-      <time datetime="2017-01-16T03:40:14.000Z" itemprop="datePublished">2017-01-16</time>
+      <a href="/2017/08/27/celery中使用importlib按需导包/" class="article-date">
+      <time datetime="2017-08-27T13:39:00.000Z" itemprop="datePublished">2017-08-27</time>
 </a>
 
 
@@ -239,7 +239,7 @@ Quick">
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      Celery中使用importlib按需导包
     </h1>
   
 
@@ -249,6 +249,10 @@ Quick">
         
 
         
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/celery/">celery</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/importlib/">importlib</a></li></ul>
+    </div>
+
         <div class="clearfix"></div>
       </div>
       
@@ -256,15 +260,15 @@ Quick">
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <p>最近在写扫描器的时候发现如果写死在run函数里边是很不明智的<br>这样的话每次都要将<code>celery</code>重启才可以生效，就想到了说可以不可以使用importlib来动态的导入<br>如此一来后期的插件添加时就不再需要重启<code>celery</code>了.</p>
+<p>但是遇到了坑, 很容易就出现<code>ImportError: No module named folder.script1</code>或者<code>TypeError: relative imports require the &#39;package&#39; argument</code></p>
+<p>我愁呀, 我一缕一缕的揪头发呀。</p>
+<p>后来在<code>celery</code> issue上看到了相同的问题<a href="https://github.com/celery/celery/issues/3441" target="_blank" rel="external">https://github.com/celery/celery/issues/3441</a></p>
+<p>具体来说就是在<code>tasks.py</code>的路径加入了<code>sys.path</code>, 这样在找module的时候可以找的到该路径.<br>成功的代码如下</p>
+<p>首先看<code>tree</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">☁  tmp [master] ⚡ tree</div><div class="line">.</div><div class="line">├── __init__.py</div><div class="line">├── folder</div><div class="line">│   ├── __init__.py</div><div class="line">│   ├── __init__.pyc</div><div class="line">│   ├── script1.py</div><div class="line">│   ├── script1.pyc</div><div class="line">│   ├── script2.py</div><div class="line">│   └── script2.pyc</div><div class="line">├── tasks.py</div><div class="line">└── tasks.pyc</div></pre></td></tr></table></figure></p>
+<p><code>tasks.py</code>内容如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#!/usr/bin/env python</div><div class="line"># coding=utf-8</div><div class="line"></div><div class="line">from os import path</div><div class="line">from os import walk</div><div class="line">from celery import Celery</div><div class="line">import importlib</div><div class="line">import time</div><div class="line">import sys</div><div class="line">import os</div><div class="line"></div><div class="line">sys.path.append(os.getcwd()) # 这一行来将文件所在目录加入到sys.path中去</div><div class="line"></div><div class="line"></div><div class="line">here = path.split(path.abspath(__file__))[0]</div><div class="line">script_folder = &quot;&#123;0&#125;/folder&quot;.format(here)</div><div class="line">app = Celery(&quot;tasks&quot;, broker=&quot;redis://localhost:6379/0&quot;)</div><div class="line"></div><div class="line">@app.task</div><div class="line">def doWork():</div><div class="line">    print script_folder</div><div class="line">    _, _, files = walk(script_folder, True).next()</div><div class="line">    #print files</div><div class="line">    script_list = []</div><div class="line">    for f in files:</div><div class="line">        f = str(f)</div><div class="line">        if f.endswith(&quot;.py&quot;) and not f.startswith(&quot;_&quot;):</div><div class="line">            f = f[:-3]</div><div class="line">            script_list.append(path.join(script_folder, f))</div><div class="line"></div><div class="line">    #print script_list</div><div class="line">    for script in script_list:</div><div class="line">        #print &quot;script:\t&quot; + script</div><div class="line">        script = &quot;.&quot;.join(script.split(&quot;/&quot;))[script.index(&quot;folder&quot;):]</div><div class="line">        module = importlib.import_module(script, __name__)</div><div class="line">        t = getattr(module, &quot;test&quot;)</div><div class="line">        tt = t(&quot;http://iqiyi.com&quot;)</div><div class="line">        result = tt.runFuzz()</div><div class="line">        print script + &quot;[RESULT]&quot; + str(result)</div><div class="line">        time.sleep(5)</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    doWork()</div></pre></td></tr></table></figure></p>
+<p>测试结果:<br><code>ipython</code>处:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">In [1]: from tasks import doWork</div><div class="line"></div><div class="line">In [2]: doWork.delay()</div><div class="line">Out[2]: &lt;AsyncResult: 023253fc-722b-4433-9d8c-f9e6a76f988b&gt;</div></pre></td></tr></table></figure></p>
+<p><code>celery</code>启动处:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"> -------------- celery@xxxxxxxxxxMacBook-Pro-7.local v4.1.0 (latentcall)</div><div class="line">---- **** ----- </div><div class="line">--- * ***  * -- Darwin-15.4.0-x86_64-i386-64bit 2017-08-27 21:31:56</div><div class="line">-- * - **** --- </div><div class="line">- ** ---------- [config]</div><div class="line">- ** ---------- .&gt; app:         tasks:0x104f225d0</div><div class="line">- ** ---------- .&gt; transport:   redis://localhost:6379/0</div><div class="line">- ** ---------- .&gt; results:     disabled://</div><div class="line">- *** --- * --- .&gt; concurrency: 4 (prefork)</div><div class="line">-- ******* ---- .&gt; task events: OFF (enable -E to monitor tasks in this worker)</div><div class="line">--- ***** ----- </div><div class="line"> -------------- [queues]</div><div class="line">                .&gt; celery           exchange=celery(direct) key=celery</div><div class="line">                </div><div class="line"></div><div class="line">[tasks]</div><div class="line">  . tasks.doWork</div><div class="line"></div><div class="line">[2017-08-27 21:31:57,109: INFO/MainProcess] Connected to redis://localhost:6379/0</div><div class="line">[2017-08-27 21:31:57,119: INFO/MainProcess] mingle: searching for neighbors</div><div class="line">[2017-08-27 21:31:58,149: INFO/MainProcess] mingle: all alone</div><div class="line">[2017-08-27 21:31:58,162: INFO/MainProcess] celery@xxxxxxxxxxxMacBook-Pro-7.local ready.</div><div class="line">[2017-08-27 21:32:11,311: INFO/MainProcess] Received task: tasks.doWork[023253fc-722b-4433-9d8c-f9e6a76f988b]  </div><div class="line">[2017-08-27 21:32:11,315: WARNING/ForkPoolWorker-3] /Users/jiaxiaoyan/Desktop/tools/tmp/folder</div><div class="line">[2017-08-27 21:32:11,920: WARNING/ForkPoolWorker-3] folder.script1[RESULT]200</div><div class="line">[2017-08-27 21:32:16,922: WARNING/ForkPoolWorker-3] folder.script2[RESULT]in script2.py, scan url:http://iqiyi.com</div><div class="line">[2017-08-27 21:32:21,924: INFO/ForkPoolWorker-3] Task tasks.doWork[023253fc-722b-4433-9d8c-f9e6a76f988b] succeeded in 10.60855711s: None</div><div class="line">^C</div><div class="line">worker: Hitting Ctrl+C again will terminate all running tasks!</div></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -273,13 +277,13 @@ Quick">
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/01/16/hello-world/">Hello World</a></p>
+        <p><span>本文标题:</span><a href="/2017/08/27/celery中使用importlib按需导包/">Celery中使用importlib按需导包</a></p>
         <p><span>文章作者:</span><a href="/" title="回到主页">Shinpachi8</a></p>
-        <p><span>发布时间:</span>2017-01-16, 11:40:14</p>
-        <p><span>最后更新:</span>2017-01-16, 11:40:14</p>
+        <p><span>发布时间:</span>2017-08-27, 21:39:00</p>
+        <p><span>最后更新:</span>2017-08-27, 21:48:09</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/01/16/hello-world/" title="Hello World">http://yoursite.com/2017/01/16/hello-world/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/01/16/hello-world/　　作者: Shinpachi8" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>原始链接:</span><a class="post-url" href="/2017/08/27/celery中使用importlib按需导包/" title="Celery中使用importlib按需导包">http://yoursite.com/2017/08/27/celery中使用importlib按需导包/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://yoursite.com/2017/08/27/celery中使用importlib按需导包/　　作者: Shinpachi8" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
@@ -291,12 +295,12 @@ Quick">
 
     <nav id="article-nav">
         
-            <div id="article-nav-newer" class="article-nav-title">
-                <a href="/2017/01/18/hctf-2016-write-up/">
-                    Hctf 2016 Write Up
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2017/08/18/被动扫描那些事儿1/">
+                    被动扫描那些事儿1
                 </a>
             </div>
-        
         
     </nav>
 
@@ -306,7 +310,7 @@ Quick">
     <div id="toc" class="toc-article">
         <strong class="toc-title">文章目录</strong>
         
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Quick-Start"><span class="toc-number">1.</span> <span class="toc-text">Quick Start</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Create-a-new-post"><span class="toc-number">1.1.</span> <span class="toc-text">Create a new post</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Run-server"><span class="toc-number">1.2.</span> <span class="toc-text">Run server</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Generate-static-files"><span class="toc-number">1.3.</span> <span class="toc-text">Generate static files</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Deploy-to-remote-sites"><span class="toc-number">1.4.</span> <span class="toc-text">Deploy to remote sites</span></a></li></ol></li></ol>
+            
         
     </div>
     <style>
@@ -342,7 +346,7 @@ Quick">
         </div>
         <script>
             window._bd_share_config={
-                "common":{"bdSnsKey":{},"bdText":"Hello World　| shin's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+                "common":{"bdSnsKey":{},"bdText":"Celery中使用importlib按需导包　| shin's blog　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
         </script>
     
 
@@ -358,7 +362,7 @@ Quick">
     
       <div class="duoshuo" id="comments">
     <div id="comment-box" ></div>
-    <div class="ds-thread" id="ds-thread" data-thread-key="2017/01/16/hello-world/" data-title="Hello World" data-url="http://yoursite.com/2017/01/16/hello-world/"></div>
+    <div class="ds-thread" id="ds-thread" data-thread-key="2017/08/27/celery中使用importlib按需导包/" data-title="Celery中使用importlib按需导包" data-url="http://yoursite.com/2017/08/27/celery中使用importlib按需导包/"></div>
     <script>
         var duoshuoQuery = {short_name:"shinpachi8"};
         var loadComment = function(){
@@ -371,7 +375,7 @@ Quick">
         
             // Add comment count
             $(function(){ 
-                var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=shinpachi8&threads=2017/01/16/hello-world/&callback=?";
+                var jsonUrl = "http://api.duoshuo.com/threads/counts.jsonp?short_name=shinpachi8&threads=2017/08/27/celery中使用importlib按需导包/&callback=?";
                 $.getJSON(jsonUrl, function(result){
                     $.each(result.response, function(i, field){
                         var value = field.comments;
@@ -418,15 +422,15 @@ Quick">
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/2017/01/18/hctf-2016-write-up/" title="上一篇: Hctf 2016 Write Up">
-                <i class="fa fa-angle-left"></i>
-            </a>
+            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
         
 
         <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+            <a href="/2017/08/18/被动扫描那些事儿1/" title="下一篇: 被动扫描那些事儿1">
+                <i class="fa fa-angle-right"></i>
+            </a>
         
     </div>
 

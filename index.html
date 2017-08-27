@@ -220,6 +220,74 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-celery中使用importlib按需导包" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/27/celery中使用importlib按需导包/" class="article-date">
+      <time datetime="2017-08-27T13:39:00.000Z" itemprop="datePublished">2017-08-27</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/27/celery中使用importlib按需导包/">Celery中使用importlib按需导包</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>最近在写扫描器的时候发现如果写死在run函数里边是很不明智的<br>这样的话每次都要将<code>celery</code>重启才可以生效，就想到了说可以不可以使用importlib来动态的导入<br>如此一来后期的插件添加时就不再需要重启<code>celery</code>了.</p>
+<p>但是遇到了坑, 很容易就出现<code>ImportError: No module named folder.script1</code>或者<code>TypeError: relative imports require the &#39;package&#39; argument</code></p>
+<p>我愁呀, 我一缕一缕的揪头发呀。</p>
+<p>后来在<code>celery</code> issue上看到了相同的问题<a href="https://github.com/celery/celery/issues/3441" target="_blank" rel="external">https://github.com/celery/celery/issues/3441</a></p>
+<p>具体来说就是在<code>tasks.py</code>的路径加入了<code>sys.path</code>, 这样在找module的时候可以找的到该路径.<br>成功的代码如下</p>
+<p>首先看<code>tree</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">☁  tmp [master] ⚡ tree</div><div class="line">.</div><div class="line">├── __init__.py</div><div class="line">├── folder</div><div class="line">│   ├── __init__.py</div><div class="line">│   ├── __init__.pyc</div><div class="line">│   ├── script1.py</div><div class="line">│   ├── script1.pyc</div><div class="line">│   ├── script2.py</div><div class="line">│   └── script2.pyc</div><div class="line">├── tasks.py</div><div class="line">└── tasks.pyc</div></pre></td></tr></table></figure></p>
+<p><code>tasks.py</code>内容如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">#!/usr/bin/env python</div><div class="line"># coding=utf-8</div><div class="line"></div><div class="line">from os import path</div><div class="line">from os import walk</div><div class="line">from celery import Celery</div><div class="line">import importlib</div><div class="line">import time</div><div class="line">import sys</div><div class="line">import os</div><div class="line"></div><div class="line">sys.path.append(os.getcwd()) # 这一行来将文件所在目录加入到sys.path中去</div><div class="line"></div><div class="line"></div><div class="line">here = path.split(path.abspath(__file__))[0]</div><div class="line">script_folder = &quot;&#123;0&#125;/folder&quot;.format(here)</div><div class="line">app = Celery(&quot;tasks&quot;, broker=&quot;redis://localhost:6379/0&quot;)</div><div class="line"></div><div class="line">@app.task</div><div class="line">def doWork():</div><div class="line">    print script_folder</div><div class="line">    _, _, files = walk(script_folder, True).next()</div><div class="line">    #print files</div><div class="line">    script_list = []</div><div class="line">    for f in files:</div><div class="line">        f = str(f)</div><div class="line">        if f.endswith(&quot;.py&quot;) and not f.startswith(&quot;_&quot;):</div><div class="line">            f = f[:-3]</div><div class="line">            script_list.append(path.join(script_folder, f))</div><div class="line"></div><div class="line">    #print script_list</div><div class="line">    for script in script_list:</div><div class="line">        #print &quot;script:\t&quot; + script</div><div class="line">        script = &quot;.&quot;.join(script.split(&quot;/&quot;))[script.index(&quot;folder&quot;):]</div><div class="line">        module = importlib.import_module(script, __name__)</div><div class="line">        t = getattr(module, &quot;test&quot;)</div><div class="line">        tt = t(&quot;http://iqiyi.com&quot;)</div><div class="line">        result = tt.runFuzz()</div><div class="line">        print script + &quot;[RESULT]&quot; + str(result)</div><div class="line">        time.sleep(5)</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">if __name__ == &apos;__main__&apos;:</div><div class="line">    doWork()</div></pre></td></tr></table></figure></p>
+<p>测试结果:<br><code>ipython</code>处:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">In [1]: from tasks import doWork</div><div class="line"></div><div class="line">In [2]: doWork.delay()</div><div class="line">Out[2]: &lt;AsyncResult: 023253fc-722b-4433-9d8c-f9e6a76f988b&gt;</div></pre></td></tr></table></figure></p>
+<p><code>celery</code>启动处:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"> -------------- celery@xxxxxxxxxxMacBook-Pro-7.local v4.1.0 (latentcall)</div><div class="line">---- **** ----- </div><div class="line">--- * ***  * -- Darwin-15.4.0-x86_64-i386-64bit 2017-08-27 21:31:56</div><div class="line">-- * - **** --- </div><div class="line">- ** ---------- [config]</div><div class="line">- ** ---------- .&gt; app:         tasks:0x104f225d0</div><div class="line">- ** ---------- .&gt; transport:   redis://localhost:6379/0</div><div class="line">- ** ---------- .&gt; results:     disabled://</div><div class="line">- *** --- * --- .&gt; concurrency: 4 (prefork)</div><div class="line">-- ******* ---- .&gt; task events: OFF (enable -E to monitor tasks in this worker)</div><div class="line">--- ***** ----- </div><div class="line"> -------------- [queues]</div><div class="line">                .&gt; celery           exchange=celery(direct) key=celery</div><div class="line">                </div><div class="line"></div><div class="line">[tasks]</div><div class="line">  . tasks.doWork</div><div class="line"></div><div class="line">[2017-08-27 21:31:57,109: INFO/MainProcess] Connected to redis://localhost:6379/0</div><div class="line">[2017-08-27 21:31:57,119: INFO/MainProcess] mingle: searching for neighbors</div><div class="line">[2017-08-27 21:31:58,149: INFO/MainProcess] mingle: all alone</div><div class="line">[2017-08-27 21:31:58,162: INFO/MainProcess] celery@xxxxxxxxxxxMacBook-Pro-7.local ready.</div><div class="line">[2017-08-27 21:32:11,311: INFO/MainProcess] Received task: tasks.doWork[023253fc-722b-4433-9d8c-f9e6a76f988b]  </div><div class="line">[2017-08-27 21:32:11,315: WARNING/ForkPoolWorker-3] /Users/jiaxiaoyan/Desktop/tools/tmp/folder</div><div class="line">[2017-08-27 21:32:11,920: WARNING/ForkPoolWorker-3] folder.script1[RESULT]200</div><div class="line">[2017-08-27 21:32:16,922: WARNING/ForkPoolWorker-3] folder.script2[RESULT]in script2.py, scan url:http://iqiyi.com</div><div class="line">[2017-08-27 21:32:21,924: INFO/ForkPoolWorker-3] Task tasks.doWork[023253fc-722b-4433-9d8c-f9e6a76f988b] succeeded in 10.60855711s: None</div><div class="line">^C</div><div class="line">worker: Hitting Ctrl+C again will terminate all running tasks!</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/celery/">celery</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/importlib/">importlib</a></li></ul>
+    </div>
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-被动扫描那些事儿1" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -841,82 +909,6 @@
       
         <p class="article-more-link">
           <a href="/2017/02/22/lfi/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-xnuca" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/01/19/xnuca/" class="article-date">
-      <time datetime="2017-01-19T03:02:37.000Z" itemprop="datePublished">2017-01-19</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/01/19/xnuca/">Xnuca</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <h1 id="write-up"><a href="#write-up" class="headerlink" title="write-up"></a>write-up</h1><blockquote>
-<p>说来很尴尬，这个CTF自己并没有做出来多少。<br>只不过是写出来自己总结一下经验</p>
-</blockquote>
-<p>放一个详细的<a href="https://www.ohlinge.cn/ctf/xnuca_ctf_writeup.html">write-up</a><br><a href="http://bbs.heetian.com/forum.php?mod=forumdisplay&amp;fid=44">合天官方write-up</a></p>
-<h2 id="Q1-BaseCoding"><a href="#Q1-BaseCoding" class="headerlink" title="Q1 BaseCoding"></a>Q1 BaseCoding</h2><blockquote>
-<p>这个题自己解出来了，很简单的一个编码题</p>
-</blockquote>
-<ul>
-<li><p>题目：<br><a href="http://question1.erangelab.com/">BaseCoding</a></p>
-</li>
-<li><p>write-up:<br>访问页面，得到了base64编码的flag信息，base64解码即可</p>
-</li>
-</ul>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ctf/">ctf</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/01/19/xnuca/#more">阅读全文 >></a>
         </p>
       
       <div class="clearfix"></div>
