@@ -220,6 +220,71 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-mysql-udf-exploit-复现小记" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/03/mysql-udf-exploit-复现小记/" class="article-date">
+      <time datetime="2017-09-03T02:15:50.000Z" itemprop="datePublished">2017-09-03</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/03/mysql-udf-exploit-复现小记/">Mysql Udf Exploit 复现小记</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+              <p>最近被问到mysql的udf(User-Defined Function), 被虐成狗, 没有用过就受到鄙视么…受伤。<br>所以把mysql的oob搞了一下之后这次来搞Udf提权了<br>先把payload放上来<br>windows32: <a href="https://github.com/Hood3dRob1n/SQLi/raw/master/myudf/payloads/32/lib_mysqludf_sys.dll">https://github.com/Hood3dRob1n/SQLi/raw/master/myudf/payloads/32/lib_mysqludf_sys.dll</a><br>此github project还有windows64与linux, 请自取。 这里发现sqlmap的dll文件不能用, 不知道哪里发生了错误。</p>
+<p>最重要的是, 还是对比了一下<code>select * into dumpfile</code>和<code>select * into (out)file</code>的区别:<br><a href="https://mariadb.com/kb/en/the-mariadb-library/select-into-dumpfile/">dumpfile</a><br><a href="https://mariadb.com/kb/en/the-mariadb-library/select-into-outfile/">outfile</a><br><code>dumpfile</code>是用于写入文件, 不可分行, 即官网所说的 <code>single unformatted row</code>, 主要用于blob格式的字段<br><code>outfile</code> 可用于写入多行数据, 格式化的文本数据 如csv:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SELECT customer_id, firstname, surname INTO OUTFILE &apos;/exportdata/customers.txt&apos;</div><div class="line">  FIELDS TERMINATED BY &apos;,&apos; OPTIONALLY ENCLOSED BY &apos;&quot;&apos;</div><div class="line">  LINES TERMINATED BY &apos;\n&apos;</div><div class="line">  FROM customers;</div></pre></td></tr></table></figure></p>
+          
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/mysql/">mysql</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/udf/">udf</a></li></ul>
+    </div>
+
+      
+        <p class="article-more-link">
+          <a href="/2017/09/03/mysql-udf-exploit-复现小记/#more">阅读全文 >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-out-of-band-exploit-tips" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -828,72 +893,6 @@
       
         <p class="article-more-link">
           <a href="/2017/03/17/njctf2017-writeup-md/#more">阅读全文 >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-redis利用小结" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/03/04/redis利用小结/" class="article-date">
-      <time datetime="2017-03-04T12:36:02.000Z" itemprop="datePublished">2017-03-04</time>
-</a>
-
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/03/04/redis利用小结/">Redis利用小结</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-          
-              <h1 id="REDIS-远程利用"><a href="#REDIS-远程利用" class="headerlink" title="REDIS 远程利用"></a>REDIS 远程利用</h1><blockquote>
-<p>自己搭建的环境， 两台机器都是CENTOS7， REDIS版本是3.2.4. 其中REDIS-SERVER所在的主机IP是 10.1.1.212 ， 攻击机是在 10.1.1.100。 但是REDIS在新版本中是默认允许远程连接的。 所以这里用 <code>protected-mode no</code>来模拟。 至于实际环境中可以用SSRF来利用。</p>
-</blockquote>
-          
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-
-      
-    <div class="article-tag tagcloud">
-        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/web安全/">web安全</a></li></ul>
-    </div>
-
-      
-        <p class="article-more-link">
-          <a href="/2017/03/04/redis利用小结/#more">阅读全文 >></a>
         </p>
       
       <div class="clearfix"></div>
